@@ -8,7 +8,6 @@ const LINKS = [
   { id: 'projects',     label: 'Projects' },
   { id: 'skills',       label: 'Skills' },
   { id: 'gallery',      label: 'Gallery' },
-  { id: 'blog',         label: 'Blog' },
   { id: 'education',    label: 'Education' },
   { id: 'publications', label: 'Publications' },
   { id: 'contact',      label: 'Contact' },
@@ -112,10 +111,10 @@ export default function Nav() {
         {/* Logo */}
         <button
           onClick={() => (onHome ? window.scrollTo({ top: 0, behavior: 'smooth' }) : goHome())}
-          className="font-display text-2xl"
-          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text)' }}
+          className="font-display text-lg"
+          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text)', whiteSpace: 'nowrap', flexShrink: 0 }}
         >
-          SM<span style={{ color: 'var(--accent)' }}>_</span>
+          Shivam Chopra
         </button>
 
         {/* Desktop: links + toggle + resume */}
@@ -174,7 +173,7 @@ export default function Nav() {
                 display: 'block', width: '100%', textAlign: 'left',
                 padding: '0.85rem 1.5rem', background: 'none', border: 'none',
                 borderBottom: '1px solid var(--border)', cursor: 'pointer',
-                fontFamily: "'JetBrains Mono', monospace", fontSize: '0.72rem',
+                fontFamily: 'var(--mono)', fontSize: '0.72rem',
                 letterSpacing: '0.12em', textTransform: 'uppercase',
                 color: active === l.id ? 'var(--accent)' : 'var(--muted)',
               }}

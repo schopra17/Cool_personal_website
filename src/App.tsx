@@ -64,7 +64,7 @@ export default function App() {
         alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem',
       }}>
         <span className="font-mono" style={{ fontSize: '0.68rem', color: 'var(--muted)', letterSpacing: '0.06em' }}>
-          © 2026 Siddhi More · Boston, MA
+          © 2026 Shivam Chopra · Boston, MA
         </span>
         <span className="font-mono" style={{ fontSize: '0.68rem', color: 'var(--muted)', letterSpacing: '0.06em' }}>
           React + Vite + Tailwind

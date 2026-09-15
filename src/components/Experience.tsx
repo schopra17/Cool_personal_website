@@ -6,7 +6,7 @@ export default function Experience() {
     <section id="experience" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="label">02 — Experience</p>
+          <p className="label">02. Experience</p>
           <h2 className="heading">Professional History</h2>
         </Reveal>
 
@@ -20,7 +20,7 @@ export default function Experience() {
                 {/* Left */}
                 <div>
                   <p className="font-mono" style={{ fontSize: '0.72rem', letterSpacing: '0.06em', color: 'var(--muted)', lineHeight: 1.6 }}>
-                    {e.startDate} – {e.endDate}
+                    {e.startDate} to {e.endDate}
                   </p>
                   <p className="font-mono" style={{ fontSize: '0.65rem', color: 'var(--muted)', marginTop: 2, letterSpacing: '0.04em' }}>
                     {e.location}
@@ -34,7 +34,7 @@ export default function Experience() {
                   <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                     {e.responsibilities.map((r, ri) => (
                       <li key={ri} style={{ display: 'flex', gap: '0.6rem', alignItems: 'flex-start', fontSize: '0.88rem', color: 'var(--muted)', lineHeight: 1.65 }}>
-                        <span style={{ flexShrink: 0, color: 'var(--muted)', fontFamily: 'monospace', fontSize: '0.8rem', marginTop: '0.12rem' }}>—</span>
+                        <span style={{ flexShrink: 0, color: 'var(--muted)', fontFamily: 'monospace', fontSize: '0.8rem', marginTop: '0.12rem' }}>•</span>
                         {r}
                       </li>
                     ))}

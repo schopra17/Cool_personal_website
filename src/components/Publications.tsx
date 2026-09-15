@@ -6,7 +6,7 @@ export default function Publications() {
     <section id="publications" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="label">08 — Publications</p>
+          <p className="label">08. Publications</p>
           <h2 className="heading">Research</h2>
         </Reveal>
 
@@ -21,7 +21,7 @@ export default function Publications() {
                       background: 'var(--accent-fill)', color: 'var(--accent-on)',
                       padding: '0.2rem 0.65rem', borderRadius: 2, display: 'inline-block', marginBottom: '0.7rem',
                     }}>
-                      {pub.year} · Conference Paper
+                      {pub.year || 'In Progress'}
                     </span>
                     <h3 style={{ fontSize: '1.05rem', fontWeight: 600, lineHeight: 1.35, maxWidth: 600 }}>{pub.title}</h3>
                   </div>
@@ -36,7 +36,7 @@ export default function Publications() {
                 <p className="font-mono" style={{ fontSize: '0.68rem', color: 'var(--accent)', letterSpacing: '0.04em', marginBottom: '0.5rem' }}>
                   {pub.authors.map((a, ai) => (
                     <span key={ai}>
-                      {a === 'Siddhi More'
+                      {a === 'Shivam Chopra'
                         ? <strong style={{ color: 'var(--accent)', textDecoration: 'underline', textDecorationColor: 'var(--accent-fill)' }}>{a}</strong>
                         : a
                       }

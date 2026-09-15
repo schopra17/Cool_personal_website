@@ -10,7 +10,7 @@ export default function About() {
     <section id="about" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="label">01 — About</p>
+          <p className="label">01. About</p>
           <h2 className="heading">Engineer. Researcher. Builder.</h2>
         </Reveal>
 
@@ -21,15 +21,21 @@ export default function About() {
           <div className="about-bio">
             <Reveal delay={80}>
               <p className="about-p">
-                I'm a <strong>robotics graduate student at Northeastern University</strong> (MS, May 2027),
-                with a background in mechanical engineering from Mumbai University. My work bridges
-                physical design, embedded systems, and intelligent autonomy.
+                I grew up in <strong>Shimla</strong>, a mountain town in northern India at the foothills
+                of the Himalayas, a place that shaped how I think about interconnected systems and
+                unpredictable environments. After my undergraduate degree in mechanical engineering
+                in India, I moved to the U.S. for a master's and PhD at <strong>UC San Diego</strong>,
+                where I joined the Gravish Lab and worked at the intersection of robotics, biology, and
+                mechanics, building robots inspired by nature, from flapping-wing microrobots to
+                underactuated robots that move and sense in sand and water.
               </p>
               <p className="about-p">
-                I'm motivated by systems that directly help people — wearable assistive devices,
-                prosthetics that restore natural movement, and autonomous robots that take on tasks
-                humans shouldn't have to. I hold the <strong>Global Student Award</strong> at Northeastern
-                and have published in <strong>AIP Conference Proceedings</strong>.
+                What motivates me isn't technology for its own sake, but engineering that improves
+                people's lives. That's what led me into medical devices, where I now work on complex
+                electromechanical systems at <strong>Dexcom</strong>, from early feasibility through
+                validation and real-world deployment. Outside of work, I love traveling, the outdoors,
+                and the water: surfing, swimming, water skiing, and currently learning to sail with
+                the MIT Sailing Club.
               </p>
             </Reveal>
           </div>
@@ -37,7 +43,7 @@ export default function About() {
           <div className="about-photo about-photo-left">
             <Reveal delay={120}>
               <figure className="photo-frame">
-                <img src={personalInfo.photo} alt="Siddhi Sanjay More" />
+                <img src={personalInfo.photo} alt="Shivam Chopra" />
               </figure>
             </Reveal>
           </div>
@@ -46,7 +52,7 @@ export default function About() {
             <Reveal delay={180}>
               {second ? (
                 <figure className="photo-frame">
-                  <img src={second} alt="Siddhi in the lab" />
+                  <img src={second} alt="Shivam in the lab" />
                 </figure>
               ) : (
                 <div className="photo-frame photo-frame-empty">

@@ -4,20 +4,20 @@ import { Reveal } from './Reveal';
 export default function Contact() {
   const links = [
     { label: 'Email',    href: `mailto:${personalInfo.email}`, icon: '✉' },
-    { label: 'GitHub',   href: personalInfo.github,   icon: 'GH' },
     { label: 'LinkedIn', href: personalInfo.linkedin, icon: 'LI' },
+    { label: 'Scholar',  href: personalInfo.scholar,  icon: 'GS' },
     { label: 'Resume',   href: personalInfo.resumeUrl, icon: '↓' },
-  ];
+  ].filter(l => l.href);
 
   return (
     <section id="contact" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6" style={{ textAlign: 'center' }}>
         <Reveal>
-          <p className="label" style={{ display: 'inline-block' }}>09 — Contact</p>
+          <p className="label" style={{ display: 'inline-block' }}>09. Contact</p>
           <h2 className="heading">Let's Work Together</h2>
           <p style={{ fontSize: '0.97rem', color: 'var(--muted)', maxWidth: 480, margin: '0 auto 2.5rem', lineHeight: 1.8 }}>
-            Open to robotics co-ops, research collaborations, and full-time roles in
-            assistive tech, autonomous systems, and human-robot interaction.
+            Open to collaborations, consulting, and conversations about robotics,
+            wearable hardware, and medical device engineering.
           </p>
         </Reveal>
 

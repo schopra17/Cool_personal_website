@@ -10,7 +10,7 @@ export default function Hero() {
   const scroll = (id: string) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
   const latest = posts[0];
-  const onBench = projects.find(p => p.status === 'in-progress');
+  const currentPlatforms = projects.filter(p => p.category === 'Current Platforms');
 
   return (
     <section id="hero" className="hero-section">
@@ -27,33 +27,47 @@ export default function Hero() {
                 <span className="win-dot" />
                 <span className="win-dot" />
               </div>
-              <span className="win-title">~/siddhi — whoami</span>
+              <span className="win-title">~/shivam $ home</span>
             </div>
 
             <div className="win-body hero-win-main-body">
-              <div className="hero-eyebrow">
-                <span className="hero-dot" aria-hidden="true" />
-                MS Robotics · Northeastern University · Boston, MA
+              <div className="hero-name-row">
+                <div>
+                  <div className="hero-eyebrow">
+                    <span className="hero-dot" aria-hidden="true" />
+                    PhD Robotics · UC San Diego · Boston, MA
+                  </div>
+
+                  <h1 className="hero-name">
+                    Shivam<br />
+                    <span className="hero-name-accent">
+                      Chopra, PhD<span className="hero-cursor" aria-hidden="true">_</span>
+                    </span>
+                  </h1>
+                </div>
+
+                {personalInfo.photo && (
+                  <figure className="photo-frame hero-photo">
+                    <img src={personalInfo.photo} alt={personalInfo.name} />
+                  </figure>
+                )}
               </div>
 
-              <h1 className="hero-name">
-                Siddhi<br />
-                <span className="hero-name-accent">
-                  More<span className="hero-cursor" aria-hidden="true">_</span>
-                </span>
-              </h1>
-
-              <p className="hero-tagline">Building robots that sense, decide, and help people.</p>
+              <p className="hero-tagline">Building hardware that senses, moves, and holds up in the real world.</p>
 
               <p className="hero-sub">
-                I work at the intersection of mechanical engineering and intelligent autonomy —
-                wearable assistive devices, impedance-controlled prosthetics, and autonomous
-                navigation systems.
+                I'm a mechanical engineer and systems-level hardware lead with a PhD in Mechanical
+                Engineering (Robotics) from UC San Diego. My work spans early-stage robotic systems,
+                published in IEEE and covered by outlets like New Atlas, and wearable hardware
+                development at Dexcom, where I lead subsystem architecture from concept through
+                build readiness and validation.
               </p>
 
               <div className="hero-cta">
                 <button className="btn-primary" onClick={() => scroll('projects')}>View Projects</button>
-                <a href={personalInfo.github} target="_blank" rel="noreferrer" className="btn-ghost">GitHub ↗</a>
+                {personalInfo.github && (
+                  <a href={personalInfo.github} target="_blank" rel="noreferrer" className="btn-ghost">GitHub ↗</a>
+                )}
                 <a href={personalInfo.resumeUrl} target="_blank" rel="noreferrer" className="btn-ghost">Resume ↗</a>
               </div>
             </div>
@@ -70,7 +84,7 @@ export default function Hero() {
                     <span className="win-dot" />
                     <span className="win-dot" />
                   </div>
-                  <span className="win-title">blog</span>
+                  <span className="win-title">news</span>
                 </div>
                 <div className="win-body">
                   <p className="bench-title">
@@ -84,20 +98,27 @@ export default function Hero() {
               </div>
             )}
 
-            {/* On the bench */}
-            {onBench && (
+            {/* Current platforms */}
+            {currentPlatforms.length > 0 && (
               <div className="win">
                 <div className="win-bar">
                   <div className="win-dots" aria-hidden="true">
                     <span className="win-dot win-dot-live" />
                     <span className="win-dot" />
                   </div>
-                  <span className="win-title">on the bench</span>
+                  <span className="win-title">current platforms</span>
                 </div>
-                <div className="win-body">
-                  <p className="bench-title">{onBench.category}</p>
-                  <p className="bench-desc">{onBench.description}</p>
-                  <button className="bench-link font-mono" onClick={() => scroll('projects')}>
+                <div className="win-body" style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+                  {currentPlatforms.map(p => (
+                    <div key={p.id} style={{ display: 'flex', gap: '0.7rem', alignItems: 'flex-start' }}>
+                      <div className="bench-thumb" aria-hidden="true">📷</div>
+                      <div>
+                        <p className="bench-title">{p.title}</p>
+                        <p className="bench-desc">{p.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <button className="bench-link font-mono" onClick={() => scroll('current-platforms')}>
                     Open ↗
                   </button>
                 </div>

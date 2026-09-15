@@ -35,7 +35,7 @@ export default function Gallery() {
     <section id="gallery" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
-        <p className="label">05 — Gallery</p>
+        <p className="label">05. Gallery</p>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
           <h2 className="heading" style={{ marginBottom: 0 }}>Visual Archive</h2>
 

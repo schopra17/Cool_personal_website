@@ -109,7 +109,7 @@ export default function Comments({ slug }: { slug: string }) {
         <h3 className="comments-title">Comments</h3>
         <div className="comments-empty">
           <p className="font-mono">
-            Comments aren’t connected yet — add your Supabase keys to <code>.env</code>
+            Comments aren’t connected yet. Add your Supabase keys to <code>.env</code>
             {' '}and run <code>supabase/schema.sql</code>. See <code>BLOG-SETUP.md</code>.
           </p>
         </div>
@@ -164,7 +164,7 @@ export default function Comments({ slug }: { slug: string }) {
         </div>
 
         {formError && <p className="comment-error font-mono">{formError}</p>}
-        {justPosted && !formError && <p className="comment-success font-mono">Thanks — your comment is live.</p>}
+        {justPosted && !formError && <p className="comment-success font-mono">Thanks! Your comment is live.</p>}
       </form>
 
       {/* ── List ── */}
@@ -173,7 +173,7 @@ export default function Comments({ slug }: { slug: string }) {
       ) : loadError ? (
         <p className="comments-status font-mono">{loadError}</p>
       ) : comments.length === 0 ? (
-        <p className="comments-status font-mono">No comments yet — be the first.</p>
+        <p className="comments-status font-mono">No comments yet. Be the first.</p>
       ) : (
         <ul className="comment-list">
           {comments.map(c => (

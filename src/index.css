@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -70,6 +70,11 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Every section wraps its content in Tailwind's max-w-6xl (1152px). On wide
+   monitors and Safari full-screen that reads as excess margin either side —
+   widen the shared container instead of touching every section. */
+.max-w-6xl { max-width: 1400px; }
 html, body {
   scroll-behavior: smooth;
   overflow-x: hidden;
@@ -88,10 +93,10 @@ body {
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 3px; }
 
-/* Headings are the body face at 700 - one typeface for the whole site. Being
-   monospaced, it needs no negative tracking; weight alone carries hierarchy. */
-.font-display { font-family: var(--display); font-weight: 700; letter-spacing: 0; }
-.font-mono    { font-family: 'JetBrains Mono', monospace; }
+/* Headings are the body face at 700 - one typeface for the whole site. A
+   touch of negative tracking keeps large weights from looking loose. */
+.font-display { font-family: var(--display); font-weight: 700; letter-spacing: -0.02em; }
+.font-mono    { font-family: var(--mono); }
 
 .nav-base { position: fixed; top: 0; left: 0; right: 0; z-index: 50; transition: background 0.3s, border-color 0.3s; }
 .nav-scrolled { background: rgba(251,248,240,0.94); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
@@ -99,10 +104,10 @@ body {
 .section-pad { padding: 5.5rem 0; }
 .section-alt  { background: var(--bg-alt); }
 
-.label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
-.heading { font-family: var(--display); font-weight: 700; font-size: clamp(2.1rem, 3.9vw, 3.3rem); letter-spacing: 0; line-height: 1.08; margin-bottom: 2.5rem; }
+.label { font-family: var(--mono); font-weight: 600; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.3rem; }
+.heading { font-family: var(--display); font-weight: 700; font-size: clamp(2.1rem, 3.9vw, 3.3rem); letter-spacing: -0.02em; line-height: 1.08; margin-bottom: 2.5rem; }
 
-.tag { font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; padding: 0.16rem 0.55rem; background: var(--surface); border: 1.5px solid var(--ink); border-radius: 0; color: var(--ink); white-space: nowrap; }
+.tag { font-family: var(--mono); font-weight: 500; font-size: 0.66rem; padding: 0.16rem 0.55rem; background: var(--surface); border: 1.5px solid var(--ink); border-radius: 0; color: var(--ink); white-space: nowrap; }
 .tag-accent { background: var(--accent-bg); border-color: var(--ink); color: var(--ink); }
 
 /* Hard offset shadow, no blur, square corners — the core of the look. The
@@ -113,12 +118,12 @@ body {
 
 /* Amber fill with ink text: 10.7:1. White on amber would be 1.5:1, so the
    dark ink is what lets the real palette colour be used at full strength. */
-.btn-primary { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--accent-fill); color: var(--accent-on); font-weight: 500; padding: 0.6rem 1.5rem; border: var(--rule-w) solid var(--ink); border-radius: 0; box-shadow: var(--shadow-hard-sm); cursor: pointer; transition: transform 0.08s steps(2), box-shadow 0.08s steps(2); text-decoration: none; display: inline-block; }
+.btn-primary { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--accent-fill); color: var(--accent-on); font-weight: 500; padding: 0.6rem 1.5rem; border: var(--rule-w) solid var(--ink); border-radius: 0; box-shadow: var(--shadow-hard-sm); cursor: pointer; transition: transform 0.08s steps(2), box-shadow 0.08s steps(2); text-decoration: none; display: inline-block; }
 .btn-primary:hover { transform: translate(-1px, -1px); box-shadow: var(--shadow-hard); }
 /* Pressing sinks the button into its own shadow. */
 .btn-primary:active { transform: translate(3px, 3px); box-shadow: none; }
 
-.btn-ghost { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--surface); color: var(--ink); padding: 0.6rem 1.4rem; border: var(--rule-w) solid var(--ink); border-radius: 0; box-shadow: var(--shadow-hard-sm); cursor: pointer; transition: transform 0.08s steps(2), box-shadow 0.08s steps(2); text-decoration: none; display: inline-block; }
+.btn-ghost { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; background: var(--surface); color: var(--ink); padding: 0.6rem 1.4rem; border: var(--rule-w) solid var(--ink); border-radius: 0; box-shadow: var(--shadow-hard-sm); cursor: pointer; transition: transform 0.08s steps(2), box-shadow 0.08s steps(2); text-decoration: none; display: inline-block; }
 .btn-ghost:hover { transform: translate(-1px, -1px); box-shadow: var(--shadow-hard); }
 .btn-ghost:active { transform: translate(3px, 3px); box-shadow: none; }
 
@@ -134,11 +139,11 @@ body {
    exactly one place to change a colour.
    ─────────────────────────────────────────────────────────────────────────── */
 :root {
-  --mono: 'JetBrains Mono', monospace;
-  /* One family throughout: JetBrains Mono. Headings differ from body by weight
-     (700 vs 400) and size only, which keeps the terminal feel consistent. */
-  --display: 'JetBrains Mono', ui-monospace, monospace;
-  --body:    'JetBrains Mono', ui-monospace, monospace;
+  /* One family throughout: Inter. Headings differ from body by weight
+     (700 vs 400) and size only, which keeps the whole site feeling of a piece. */
+  --mono:    'Inter', ui-sans-serif, sans-serif;
+  --display: 'Inter', ui-sans-serif, sans-serif;
+  --body:    'Inter', ui-sans-serif, sans-serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -233,7 +238,10 @@ nav {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid var(--border);
-  min-height: 100vh;
+  /* Capped rather than a flat 100vh: on a tall/large display (Safari full
+     screen, an external monitor) 100vh let the section balloon far past the
+     content's natural size, stranding the card in empty background. */
+  min-height: min(100vh, 760px);
   display: flex;
   align-items: center;
 }
@@ -275,15 +283,23 @@ nav {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.5; transform: scale(0.8); }
 }
+.hero-name-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+.hero-photo {
+  width: clamp(140px, 24vw, 230px);
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
 .hero-name {
   font-family: var(--display);
-  font-weight: 700;
-  /* Deliberately restrained. JetBrains Mono draws "Siddhi" 360px wide at
-     100px type, so 6rem lands around 346px inside the 644px window - it
-     reads as a heading rather than a billboard. */
-  font-size: clamp(2.4rem, 7vw, 6rem);
-  line-height: 0.92;
-  letter-spacing: 0;
+  font-weight: 800;
+  font-size: clamp(2rem, 5.6vw, 4.6rem);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
   color: var(--text);
   animation: fadeUp 0.7s ease 0.2s both;
 }
@@ -1010,11 +1026,9 @@ html.dark ::-webkit-scrollbar-thumb { background: var(--border-2); }
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   HERO DESKTOP  —  asymmetrical
-   A wide primary window beside a narrower stack of two readout panels. The
-   side column is pushed down so the two halves do not read as aligned
-   columns; that offset is what makes the composition asymmetrical rather
-   than just "two columns".
+   HERO DESKTOP
+   A wide primary window beside a narrower stack of two readout panels,
+   top-aligned so both columns start at the same line.
    ══════════════════════════════════════════════════════════════════════════ */
 .hero-desk {
   display: grid;
@@ -1028,13 +1042,16 @@ html.dark ::-webkit-scrollbar-thumb { background: var(--border-2); }
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
-  margin-top: 3.5rem;            /* the offset */
   animation: fadeUp 0.6s ease 0.3s both;
 }
 @media (max-width: 900px) {
   .hero-desk { grid-template-columns: 1fr; gap: 1.2rem; }
   .hero-side { margin-top: 0; }
   .hero-win-main-body { padding: 1.2rem 1.2rem 1.5rem; }
+}
+@media (max-width: 420px) {
+  .hero-name-row { flex-direction: column-reverse; }
+  .hero-photo { width: 140px; }
 }
 
 /* Readout rows in the system panel */
@@ -1068,6 +1085,19 @@ html.dark ::-webkit-scrollbar-thumb { background: var(--border-2); }
   font-size: 0.78rem;
   line-height: 1.6;
   color: var(--muted);
+}
+.bench-thumb {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background: var(--paper-2);
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  opacity: 0.4;
+  margin-top: 0.15rem;
 }
 .bench-link {
   margin-top: 0.8rem;
