@@ -267,16 +267,20 @@ nav {
   text-transform: uppercase;
   color: var(--muted);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.6rem;
   margin-bottom: 1.2rem;
   animation: fadeUp 0.6s ease 0.1s both;
 }
+/* Role and degree sit on their own lines rather than running together */
+.hero-eyebrow-lines { display: flex; flex-direction: column; gap: 0.3rem; }
 .hero-dot {
   width: 6px; height: 6px;
   background: var(--accent);
   border-radius: 50%;
   display: inline-block;
+  flex-shrink: 0;
+  margin-top: 0.25rem;   /* centre on the first eyebrow line */
   animation: pulse 2s ease-in-out infinite;
 }
 @keyframes pulse {
@@ -320,7 +324,7 @@ nav {
   font-size: clamp(1.05rem, 2.4vw, 1.6rem);
   letter-spacing: 0;
   color: var(--muted);
-  margin-top: 1.5rem;
+  margin-top: clamp(1.5rem, 6vw, 3.2rem);
   animation: fadeUp 0.7s ease 0.35s both;
 }
 .hero-sub {
@@ -980,15 +984,15 @@ html.dark ::-webkit-scrollbar-thumb { background: var(--border-2); }
   flex: 1;
   text-align: center;
   font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.win-body { padding: 1.1rem; }
+.win-body { padding: 1.2rem; }
 
 /* An inset "well", the inverse of the raised window — used for readouts. */
 .well {
@@ -1072,45 +1076,336 @@ html.dark ::-webkit-scrollbar-thumb { background: var(--border-2); }
   white-space: nowrap;
 }
 
-/* "On the bench" panel */
+/* Side-column panels (news, current platforms).
+   Three sizes only: a small mono meta line, a readable headline, and body
+   copy at a real reading size. The meta line is the ONLY uppercase mono
+   text here — headlines and descriptions were being set at 10-12px, which
+   is where these panels became unreadable. */
 .bench-title {
   font-family: var(--mono);
-  font-size: 0.62rem;
-  letter-spacing: 0.14em;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.45rem;
 }
+.bench-headline {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.bench-headline-sm { font-size: 0.94rem; margin-bottom: 0.25rem; }
 .bench-desc {
-  font-size: 0.78rem;
-  line-height: 1.6;
+  font-size: 0.88rem;
+  line-height: 1.65;
   color: var(--muted);
 }
 .bench-thumb {
-  width: 40px;
-  height: 40px;
+  width: 52px;
+  height: 52px;
   flex-shrink: 0;
   background: var(--paper-2);
   border: 1.5px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.9rem;
-  opacity: 0.4;
-  margin-top: 0.15rem;
+  overflow: hidden;
+  margin-top: 0.2rem;
 }
 .bench-link {
-  margin-top: 0.8rem;
+  margin-top: 0.9rem;
   background: var(--surface);
   border: 1.5px solid var(--ink);
   box-shadow: 2px 2px 0 var(--ink);
   color: var(--ink);
-  padding: 0.3rem 0.7rem;
-  font-size: 0.62rem;
-  letter-spacing: 0.12em;
+  padding: 0.42rem 0.85rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   cursor: pointer;
   transition: transform 0.08s steps(2), box-shadow 0.08s steps(2);
 }
 .bench-link:hover { transform: translate(-1px, -1px); box-shadow: 3px 3px 0 var(--ink); }
 .bench-link:active { transform: translate(2px, 2px); box-shadow: none; }
+
+/* Hero slideshow — rotates through placeholder or real slides. */
+.hero-slideshow {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: var(--paper-2);
+  border-bottom: var(--rule-w) solid var(--ink);
+}
+.hero-slide {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.6s ease;
+}
+.hero-slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero-slide-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.hero-slide-placeholder span:first-child { font-size: 1.6rem; opacity: 0.25; }
+.hero-slide-placeholder span:last-child { font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); opacity: 0.6; }
+.hero-slide-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.65rem 0;
+}
+.hero-slide-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: 1.5px solid var(--ink);
+  background: var(--surface);
+  padding: 0;
+  cursor: pointer;
+}
+.hero-slide-dot-active { background: var(--accent-fill); }
+
+/* ── "Featured in" strip under the hero CTAs ── */
+.hero-press {
+  margin-top: 2rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.2rem;
+  animation: fadeUp 0.7s ease 0.65s both;
+}
+.hero-press-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.hero-press-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 0.86rem;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  opacity: 0.8;
+}
+.hero-press-list a { color: inherit; text-decoration: none; }
+.hero-press-list a:hover { color: var(--accent); }
+
+/* Bench thumbnails carry a real photo now; crop to the square */
+.bench-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* Honour the OS motion preference: no entrance animations, no blinking
+   cursor, no pulsing dot (the slideshow checks this in JS). */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .hero-eyebrow, .hero-name, .hero-tagline, .hero-sub, .hero-cta, .hero-press { animation: none; }
+  .hero-cursor, .hero-dot { animation: none; }
+  .hero-slide { transition: none; }
+}
+
+/* The nav is fixed, so anchored sections need to clear it */
+section[id] { scroll-margin-top: 5rem; }
+
+/* ── Experience timeline ──
+   Compact rows: title, meta line, one-line summary, and a disclosure for the
+   detail bullets. The old 180px date column is gone; the rail is a 2px line. */
+.xp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+.xp-list { display: flex; flex-direction: column; }
+.xp-item {
+  position: relative;
+  padding: 0 0 1.7rem 1.9rem;
+  border-left: 2px solid var(--border);
+}
+.xp-item-last { border-left-color: transparent; padding-bottom: 0; }
+.xp-dot {
+  position: absolute;
+  left: -8px;
+  top: 0.25rem;
+  width: 14px;
+  height: 14px;
+  background: var(--surface);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+}
+.xp-dot-current { background: var(--accent-fill); }
+.xp-title {
+  font-size: 1.12rem;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  margin-bottom: 0.25rem;
+}
+.xp-meta {
+  font-size: 0.7rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+.xp-company { color: var(--accent); font-weight: 600; }
+.xp-sep { opacity: 0.45; }
+.xp-now {
+  margin-left: 0.6rem;
+  background: var(--accent-fill);
+  color: var(--accent-on);
+  padding: 0.1rem 0.45rem;
+  border-radius: 2px;
+  letter-spacing: 0.12em;
+  font-size: 0.6rem;
+}
+.xp-summary {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 68ch;
+  margin-bottom: 0.55rem;
+}
+.xp-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+.xp-toggle:hover { opacity: 0.7; }
+.xp-bullets {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-width: 70ch;
+  margin-top: 0.8rem;
+}
+.xp-bullets li {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+.xp-bullet-dot {
+  width: 6px; height: 6px;
+  flex-shrink: 0;
+  margin-top: 0.55rem;
+  background: var(--accent-fill);
+  border: 1.5px solid var(--ink);
+}
+@media (max-width: 520px) {
+  .xp-item { padding-left: 1.4rem; }
+  .xp-title { font-size: 1.02rem; }
+}
+
+/* ── Placeholder photo slots ──
+   A reserved frame reads as "photo pending", where an emoji on grey reads as
+   a bug. Used by the About rotator and the gallery grid. */
+.slide-placeholder,
+.gallery-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      transparent, transparent 9px,
+      rgba(91,95,151,0.05) 9px, rgba(91,95,151,0.05) 18px
+    ),
+    var(--paper-2);
+}
+.gallery-placeholder {
+  break-inside: avoid;
+  margin-bottom: 0.8rem;
+  border: 1.5px dashed var(--border);
+  border-radius: 3px;
+  opacity: 0.75;
+}
+.slide-placeholder-frame {
+  width: 34px;
+  height: 26px;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  opacity: 0.35;
+  position: relative;
+}
+.slide-placeholder-frame::after {
+  content: '';
+  position: absolute;
+  inset: 5px 5px 5px 5px;
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+}
+.slide-placeholder-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  opacity: 0.7;
+}
+.slide-caption {
+  font-size: 0.78rem;
+  color: var(--muted);
+  padding: 0.7rem 1rem 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Abstract disclosure in Publications */
+.pub-toggle {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--accent);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: opacity 0.2s;
+}
+.pub-toggle:hover { opacity: 0.7; }
+
+/* The About rotator sits beside a portrait headshot, so it matches that
+   proportion instead of the hero panel's landscape crop. */
+.about-photo-right .hero-slideshow { aspect-ratio: 3 / 4; }
+
+/* Profile links under the hero CTAs. Deliberately quieter than the buttons. */
+.hero-links {
+  margin-top: 1.1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  animation: fadeUp 0.7s ease 0.6s both;
+}
+.hero-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.hero-links a:hover { color: var(--accent); }
+.hero-links-sep { margin: 0 0.6rem; opacity: 0.45; }

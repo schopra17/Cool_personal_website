@@ -9,7 +9,7 @@ import Blog         from './components/Blog';
 import Education    from './components/Education';
 import Publications from './components/Publications';
 import Contact      from './components/Contact';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useHashRoute } from './lib/useHashRoute';
 import './index.css';
 import './blog.css';
@@ -31,6 +31,17 @@ function RouteFallback() {
 
 export default function App() {
   const route = useHashRoute();
+  // A project dialog renders over the home page, so both routes mount it.
+  const showHome = route.name === 'home' || route.name === 'project';
+
+  // Someone arriving on a bare section anchor (site.com/#experience) needs the
+  // scroll after React has mounted the sections, which is past the browser's
+  // own attempt.
+  useEffect(() => {
+    const id = window.location.hash.replace(/^#/, '');
+    if (!id || id.startsWith('/')) return;
+    requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView());
+  }, []);
 
   return (
     <>
@@ -42,7 +53,7 @@ export default function App() {
         {route.name === 'admin' && (
           <Suspense fallback={<RouteFallback />}><CommentsAdmin /></Suspense>
         )}
-        {route.name === 'home'  && (
+        {showHome && (
           <>
             <Hero />
             <About />

@@ -1,5 +1,6 @@
-import { personalInfo } from '../data/portfolioData';
+import { personalInfo, aboutSlideshow } from '../data/portfolioData';
 import { Reveal } from './Reveal';
+import PhotoSlideshow from './PhotoSlideshow';
 
 export default function About() {
   // Right-hand slot is optional — until a path is set it renders as a
@@ -10,7 +11,7 @@ export default function About() {
     <section id="about" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="label">01. About</p>
+          <p className="label">About</p>
           <h2 className="heading">Engineer. Researcher. Builder.</h2>
         </Reveal>
 
@@ -55,15 +56,10 @@ export default function About() {
                   <img src={second} alt="Shivam in the lab" />
                 </figure>
               ) : (
-                <div className="photo-frame photo-frame-empty">
-                  <span className="font-mono">
-                    2nd photo
-                    <br />
-                    set <code>photo2</code> in
-                    <br />
-                    portfolioData.ts
-                  </span>
-                </div>
+                /* Rotating slot for lab, field, and out-of-office shots. Fill in
+                   aboutSlideshow in portfolioData.ts and these frames become
+                   photos with captions. */
+                <PhotoSlideshow slides={aboutSlideshow} title="in the field" placeholders />
               )}
             </Reveal>
           </div>

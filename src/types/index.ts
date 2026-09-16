@@ -24,6 +24,9 @@ export interface Publication {
   abstract: string;
   pdfUrl?: string;
   externalUrl?: string;
+  /** Display rank among the highlighted papers (1, 2, 3...). Unranked papers
+   *  sit behind the "show all" toggle in the Research section. */
+  featured?: number;
 }
 
 export interface Experience {
@@ -33,6 +36,9 @@ export interface Experience {
   location: string;
   startDate: string;
   endDate: string;
+  /** One line shown in the collapsed row. The responsibilities below it stay
+   *  hidden until the reader asks for them. */
+  summary?: string;
   responsibilities: string[];
 }
 

@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
+import { personalInfo } from '../data/portfolioData';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import { getPost, posts, formatDate } from '../lib/posts';
 import { goHome, navigate } from '../lib/useHashRoute';
-import Comments from './Comments';
 
 export default function BlogPost({ slug }: { slug: string }) {
   const post = getPost(slug);
@@ -12,7 +12,7 @@ export default function BlogPost({ slug }: { slug: string }) {
   useEffect(() => {
     window.scrollTo({ top: 0 });
     const previous = document.title;
-    if (post) document.title = `${post.title} · Siddhi More`;
+    if (post) document.title = `${post.title} · ${personalInfo.name}`;
     return () => { document.title = previous; };
   }, [slug, post]);
 
@@ -99,8 +99,6 @@ export default function BlogPost({ slug }: { slug: string }) {
             ) : <span />}
           </nav>
         )}
-
-        <Comments slug={post.slug} />
       </div>
     </article>
   );

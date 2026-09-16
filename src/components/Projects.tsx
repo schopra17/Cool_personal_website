@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { projects } from '../data/portfolioData';
 import { Project } from '../types';
 import ProjectModal from './ProjectModal';
 import { Reveal } from './Reveal';
+import { useHashRoute, navigate } from '../lib/useHashRoute';
 
 /* Cards cycle the four palette hues on their DECORATIVE parts only — the top
    bar and the bullet dots. Amber, coral and periwinkle measure 1.5-2.6:1 on
@@ -13,7 +14,30 @@ const CARD_HUES = ['var(--amber)', 'var(--coral)', 'var(--indigo)', 'var(--periw
 const slugify = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
 export default function Projects() {
-  const [active, setActive] = useState<Project | null>(null);
+  // The open project lives in the URL (#/project/<id>) so any project can be
+  // linked, bookmarked, and shared directly.
+  const route = useHashRoute();
+  const active: Project | null =
+    route.name === 'project' ? projects.find(p => p.id === route.id) ?? null : null;
+
+  // Closing should undo the click, not push another entry — but only when we
+  // were the ones who opened it. A visitor arriving on a project link goes to
+  // the projects grid instead.
+  const openedHere = useRef(false);
+  const open = (p: Project) => { openedHere.current = true; navigate('/project/' + p.id); };
+  const close = () => {
+    if (openedHere.current) { openedHere.current = false; history.back(); }
+    else navigate('');
+  };
+
+  // Deep link landed straight on a project: put the grid behind the dialog so
+  // closing it leaves the visitor somewhere sensible.
+  useEffect(() => {
+    if (active && !openedHere.current) {
+      document.getElementById('projects')?.scrollIntoView();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active?.id]);
 
   // Grouped by category, in first-appearance order, so each group can carry
   // its own heading and scroll anchor (e.g. "Current Platforms" is a
@@ -29,7 +53,7 @@ export default function Projects() {
     <section id="projects" className="section-pad section-alt" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="label">03. Projects</p>
+          <p className="label">Projects</p>
           <h2 className="heading">Selected Work</h2>
         </Reveal>
 
@@ -54,7 +78,7 @@ export default function Projects() {
                     <div
                       className="card"
                       style={{ overflow: 'hidden', cursor: 'pointer', display: 'flex', flexDirection: 'column', height: '100%' }}
-                      onClick={() => setActive(p)}
+                      onClick={() => open(p)}
                     >
                       {/* Top accent bar — decorative, so a raw fill is fine */}
                       <div style={{ height: 6, background: hue, borderBottom: '2px solid var(--ink)' }} />
@@ -80,7 +104,7 @@ export default function Projects() {
                                 overflow: 'hidden',
                                 minWidth: 0,
                               }}
-                              onClick={() => setActive(p)} // clicking image opens modal
+                              onClick={() => open(p)} // clicking image opens modal
                             >
                               <img
                                 src={src}
@@ -118,25 +142,7 @@ export default function Projects() {
                         <div style={{ overflow: 'hidden', maxHeight: 160 }}>
                           <img src={p.thumbnail} alt={p.title} style={{ width: '100%', objectFit: 'cover', display: 'block' }} />
                         </div>
-                      ) : (
-                        // No photos yet: a placeholder slot so the grid stays
-                        // visually consistent until real images are added.
-                        <div style={{
-                          height: 160,
-                          background: 'var(--paper-2)',
-                          borderBottom: '1.5px solid var(--border)',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: '0.35rem',
-                        }}>
-                          <span style={{ fontSize: '1.5rem', opacity: 0.25 }} aria-hidden="true">📷</span>
-                          <span className="font-mono" style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--muted)', opacity: 0.6 }}>
-                            Photo coming soon
-                          </span>
-                        </div>
-                      )}
+                      ) : null /* no image slot until a photo exists */}
 
                       <div style={{ padding: '1.2rem 1.3rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
                         {/* Category tag */}
@@ -162,12 +168,30 @@ export default function Projects() {
 
                         {/* Footer */}
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid var(--border)', paddingTop: '0.75rem' }}>
-                          <span className="font-mono" style={{ fontSize: '0.65rem', letterSpacing: '0.08em', color: 'var(--muted)' }}>
-                            {p.github ? '↗ GitHub available' : p.status === 'complete' ? '✓ Completed' : 'In progress'}
-                          </span>
-                          <span className="font-mono" style={{ fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase' }}>
+                          {p.github ? (
+                            <a
+                              href={p.github} target="_blank" rel="noreferrer"
+                              onClick={e => e.stopPropagation()}
+                              className="font-mono"
+                              style={{ fontSize: '0.65rem', letterSpacing: '0.08em', color: 'var(--accent)', textDecoration: 'none' }}
+                            >
+                              GitHub ↗
+                            </a>
+                          ) : (
+                            <span className="font-mono" style={{ fontSize: '0.65rem', letterSpacing: '0.08em', color: 'var(--muted)' }}>
+                              {p.status === 'complete' ? '✓ Completed' : 'In progress'}
+                            </span>
+                          )}
+                          {/* The real link: keyboard reachable, middle-clickable,
+                              and copyable as a direct link to this project. */}
+                          <a
+                            href={'#/project/' + p.id}
+                            onClick={e => { e.preventDefault(); e.stopPropagation(); open(p); }}
+                            className="font-mono"
+                            style={{ fontSize: '0.65rem', letterSpacing: '0.1em', color: 'var(--accent)', textTransform: 'uppercase', textDecoration: 'none' }}
+                          >
                             Details →
-                          </span>
+                          </a>
                         </div>
                       </div>
                     </div>
@@ -179,7 +203,7 @@ export default function Projects() {
         ))}
       </div>
 
-      {active && <ProjectModal project={active} onClose={() => setActive(null)} />}
+      {active && <ProjectModal project={active} onClose={close} />}
     </section>
   );
 }

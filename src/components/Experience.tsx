@@ -1,59 +1,80 @@
-import { experience } from '../data/portfolioData';
+import { useState } from 'react';
+import { experience, personalInfo } from '../data/portfolioData';
 import { Reveal } from './Reveal';
 
+/* Five roles at six bullets each was a wall of text nobody scrolls through.
+   Each row now collapses to title, employer, dates and a one-line summary —
+   about four lines — and the detail opens on request. The current role starts
+   open so the affordance is obvious. */
 export default function Experience() {
+  const [open, setOpen] = useState<string[]>(experience.length ? [experience[0].id] : []);
+  const toggle = (id: string) =>
+    setOpen(o => (o.includes(id) ? o.filter(x => x !== id) : [...o, id]));
+
   return (
     <section id="experience" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="label">02. Experience</p>
-          <h2 className="heading">Professional History</h2>
+          <p className="label">Experience</p>
+          <div className="xp-head">
+            <h2 className="heading" style={{ marginBottom: 0 }}>Professional History</h2>
+            <a href={personalInfo.resumeUrl} target="_blank" rel="noreferrer" className="btn-ghost">
+              Full Resume ↗
+            </a>
+          </div>
         </Reveal>
 
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          {experience.map((e, i) => (
-            <Reveal key={e.id} delay={i * 80}>
-              <div style={{
-                display: 'grid', gridTemplateColumns: '180px 1fr', gap: '2.5rem',
-                padding: '2rem 0', borderBottom: '1px solid var(--border)',
-              }}>
-                {/* Left */}
-                <div>
-                  <p className="font-mono" style={{ fontSize: '0.72rem', letterSpacing: '0.06em', color: 'var(--muted)', lineHeight: 1.6 }}>
-                    {e.startDate} to {e.endDate}
-                  </p>
-                  <p className="font-mono" style={{ fontSize: '0.65rem', color: 'var(--muted)', marginTop: 2, letterSpacing: '0.04em' }}>
-                    {e.location}
-                  </p>
-                </div>
+        <div className="xp-list">
+          {experience.map((e, i) => {
+            const current = e.endDate.toLowerCase() === 'present';
+            const isOpen = open.includes(e.id);
+            return (
+              <Reveal key={e.id} delay={i * 60}>
+                <div className={`xp-item ${i === experience.length - 1 ? 'xp-item-last' : ''}`}>
+                  <span className={`xp-dot ${current ? 'xp-dot-current' : ''}`} aria-hidden="true" />
 
-                {/* Right */}
-                <div>
-                  <h3 className="font-display" style={{ fontSize: '1.3rem', letterSpacing: '0.03em', marginBottom: '0.2rem' }}>{e.title}</h3>
-                  <p style={{ fontSize: '0.88rem', color: 'var(--accent)', fontWeight: 500, marginBottom: '0.8rem' }}>{e.company}</p>
-                  <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                    {e.responsibilities.map((r, ri) => (
-                      <li key={ri} style={{ display: 'flex', gap: '0.6rem', alignItems: 'flex-start', fontSize: '0.88rem', color: 'var(--muted)', lineHeight: 1.65 }}>
-                        <span style={{ flexShrink: 0, color: 'var(--muted)', fontFamily: 'monospace', fontSize: '0.8rem', marginTop: '0.12rem' }}>•</span>
-                        {r}
-                      </li>
-                    ))}
-                  </ul>
+                  <h3 className="xp-title font-display">{e.title}</h3>
+
+                  <p className="xp-meta font-mono">
+                    <span className="xp-company">{e.company}</span>
+                    <span className="xp-sep"> · </span>
+                    {[e.startDate, e.endDate].filter(Boolean).join(' to ')}
+                    {e.location && <><span className="xp-sep"> · </span>{e.location}</>}
+                    {current && <span className="xp-now">Now</span>}
+                  </p>
+
+                  {e.summary && <p className="xp-summary">{e.summary}</p>}
+
+                  {e.responsibilities.length > 0 && (
+                    <>
+                      <button
+                        onClick={() => toggle(e.id)}
+                        aria-expanded={isOpen}
+                        aria-controls={`xp-detail-${e.id}`}
+                        className="font-mono xp-toggle"
+                      >
+                        {isOpen ? 'Hide detail' : 'Detail'}
+                        <span aria-hidden="true">{isOpen ? ' ↑' : ' ↓'}</span>
+                      </button>
+
+                      {isOpen && (
+                        <ul className="xp-bullets" id={`xp-detail-${e.id}`}>
+                          {e.responsibilities.map((r, ri) => (
+                            <li key={ri}>
+                              <span className="xp-bullet-dot" aria-hidden="true" />
+                              {r}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </>
+                  )}
                 </div>
-              </div>
-            </Reveal>
-          ))}
+              </Reveal>
+            );
+          })}
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 600px) {
-          #experience .max-w-6xl div[style*="grid-template-columns"] {
-            grid-template-columns: 1fr !important;
-            gap: 0.6rem !important;
-          }
-        }
-      `}</style>
     </section>
   );
 }
