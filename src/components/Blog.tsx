@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { posts, allTags, formatDate } from '../lib/posts';
 import { navigate } from '../lib/useHashRoute';
 import { Reveal } from './Reveal';
+import Media from './Media';
 
 export default function Blog() {
   const [tag, setTag] = useState<string | null>(null);
@@ -10,7 +11,7 @@ export default function Blog() {
   return (
     <section id="news" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
-        <p className="label">06. News</p>
+        <p className="label">News</p>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
           <h2 className="heading" style={{ marginBottom: 0 }}>News</h2>
 
@@ -55,7 +56,7 @@ export default function Blog() {
                 >
                   {p.cover && (
                     <div className="blog-card-cover">
-                      <img src={p.cover} alt={p.coverAlt ?? ''} loading="lazy" />
+                      <Media item={{ src: p.cover }} alt={p.coverAlt ?? ''} />
                     </div>
                   )}
 

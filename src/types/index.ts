@@ -3,7 +3,13 @@ export interface Project {
   title: string;
   category: string;
   thumbnail?: string;
-  images?: string[];      // photo strip in card + gallery in modal
+  images?: string[];      // plain srcs, used by the Gallery section
+  /** Same photos with captions, filled in from src/assets/photos/projects/<id>.
+   *  The first is the card image; the modal lists them all. */
+  photos?: { src: string; caption?: string }[];
+  /** YouTube link or bare id. Embedded at the top of the project modal. */
+  video?: string;
+  videoCaption?: string;
   skills?: string[];      // skill tags shown at bottom of modal
   description: string;
   fullDescription: string;
@@ -24,6 +30,9 @@ export interface Publication {
   abstract: string;
   pdfUrl?: string;
   externalUrl?: string;
+  /** Display rank among the highlighted papers (1, 2, 3...). Unranked papers
+   *  sit behind the "show all" toggle in the Research section. */
+  featured?: number;
 }
 
 export interface Experience {
@@ -33,6 +42,9 @@ export interface Experience {
   location: string;
   startDate: string;
   endDate: string;
+  /** One line shown in the collapsed row. The responsibilities below it stay
+   *  hidden until the reader asks for them. */
+  summary?: string;
   responsibilities: string[];
 }
 
@@ -60,6 +72,8 @@ export interface BlogPost {
   tags: string[];
   cover?: string;          // path under /public, e.g. /blog/rover.jpg
   coverAlt?: string;
+  /** Photos from src/assets/photos/news/<slug>/, shown under the post. */
+  photos?: { src: string; caption?: string }[];
   draft: boolean;          // draft: true keeps it off the live site
   readingTime: number;     // minutes
   body: string;            // markdown, frontmatter stripped

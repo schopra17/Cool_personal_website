@@ -6,7 +6,7 @@ export default function Education() {
     <section id="education" className="section-pad section-alt" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="label">07. Education</p>
+          <p className="label">Education</p>
           <h2 className="heading">Academic Background</h2>
         </Reveal>
 
@@ -22,8 +22,7 @@ export default function Education() {
                   {e.institution}
                 </p>
                 <p className="font-mono" style={{ fontSize: '0.7rem', color: 'var(--muted)', letterSpacing: '0.06em', marginBottom: '0.2rem' }}>
-                  {e.location} · {e.graduationDate}
-                  {e.gpa && <> · GPA {e.gpa}</>}
+                  {[e.location, e.graduationDate, e.gpa && `GPA ${e.gpa}`].filter(Boolean).join(' · ')}
                 </p>
 
                 {e.courses && (

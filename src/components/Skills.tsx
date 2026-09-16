@@ -6,7 +6,7 @@ export default function Skills() {
     <section id="skills" className="section-pad section-alt" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
-          <p className="label">04. Skills</p>
+          <p className="label">Skills</p>
           <h2 className="heading">Toolbox</h2>
         </Reveal>
 

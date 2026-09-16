@@ -24,7 +24,7 @@ export default function Gallery() {
     }))
   );
 
-  const scrollToProject = (id: string) => {
+  const scrollToProject = () => {
     setLightbox(null);
     setTimeout(() => {
       document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
@@ -35,7 +35,7 @@ export default function Gallery() {
     <section id="gallery" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         {/* Header */}
-        <p className="label">05. Gallery</p>
+        <p className="label">Gallery</p>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2rem', flexWrap: 'wrap', gap: '1rem' }}>
           <h2 className="heading" style={{ marginBottom: 0 }}>Visual Archive</h2>
 
@@ -69,7 +69,7 @@ export default function Gallery() {
         {tab === 'general' && (
           <div>
             {galleryImages.length === 0 ? (
-              <EmptyState message="Add images to galleryImages in portfolioData.ts to populate this gallery." />
+              <PlaceholderGrid count={6} />
             ) : (
               <MasonryGrid>
                 {galleryImages.map((img, i) => (
@@ -89,7 +89,7 @@ export default function Gallery() {
         {tab === 'projects' && (
           <div>
             {projectImages.length === 0 ? (
-              <EmptyState message="Add an images[] array to each project in portfolioData.ts to show project photos here." />
+              <PlaceholderGrid count={6} />
             ) : (
               <MasonryGrid>
                 {projectImages.map((img, i) => (
@@ -153,7 +153,7 @@ export default function Gallery() {
                 <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.85rem' }}>{lightbox.caption ?? lightbox.tag}</span>
                 {lightbox.projectId && (
                   <button
-                    onClick={() => scrollToProject(lightbox.projectId!)}
+                    onClick={scrollToProject}
                     className="font-mono"
                     style={{
                       background: 'none', border: '1.5px solid rgba(255,255,255,0.25)',
@@ -217,13 +217,23 @@ function GalleryTile({ src, caption, onClick }: { src: string; caption?: string;
   );
 }
 
-function EmptyState({ message }: { message: string }) {
+/* Reserved slots, sized like the real tiles, so the section reads as a gallery
+   waiting on film rather than as a bug. Varying heights keep the masonry
+   rhythm the real photos will have. */
+function PlaceholderGrid({ count }: { count: number }) {
+  const heights = [260, 200, 300, 220, 280, 190];
   return (
-    <div style={{ border: '1.5px dashed var(--border)', borderRadius: 4, padding: '3.5rem 2rem', textAlign: 'center' }}>
-      <div style={{ fontSize: '2rem', marginBottom: '0.8rem', opacity: 0.3 }}>📷</div>
-      <p className="font-mono" style={{ fontSize: '0.72rem', letterSpacing: '0.1em', color: 'var(--muted)', maxWidth: 420, margin: '0 auto', lineHeight: 1.7 }}>
-        {message}
-      </p>
+    <div style={{ columns: '3 260px', gap: '0.8rem' }}>
+      {Array.from({ length: count }).map((_, i) => (
+        <div
+          key={i}
+          className="gallery-placeholder"
+          style={{ height: heights[i % heights.length] }}
+        >
+          <span className="slide-placeholder-frame" aria-hidden="true" />
+          <span className="font-mono slide-placeholder-label">Photo {i + 1}</span>
+        </div>
+      ))}
     </div>
   );
 }

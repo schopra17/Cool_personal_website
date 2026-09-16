@@ -1,11 +1,10 @@
 import { Project, Publication, Experience, Education, Skill } from '../types';
+import { folderPhotos } from '../lib/photos';
 
-// TODO: photo/photo2 point at files that don't exist yet. Drop images into
-// public/ and update these paths.
 export const personalInfo = {
   name: "Shivam Chopra",
   title: "Senior Medical Device Engineer | Robotics PhD",
-  tagline: "Robotics, wearable hardware, and automation: building physical systems that sense, adapt, and hold up under real-world constraints.",
+  tagline: "Mechanical engineer and technical lead specializing in system-level mechanical architecture and electromechanical integration for wearable and robotic systems.",
   photo: "/shivam.jpg",
   photo2: "",
   email: "shivamchopraphd@gmail.com",
@@ -16,16 +15,30 @@ export const personalInfo = {
   resumeUrl: "/ShivamChopraResume.pdf",
 };
 
-// TODO: exact graduation dates / GPA weren't listed on the old site. Fill in
-// if you want them shown (graduationDate is required by the Education type;
-// leave as "" if you'd rather not show a date).
+// Outlets that covered the PhD work. Rendered as a "Work featured in" strip
+// under the hero CTAs; the strip hides itself while this list is empty.
+// To bring it back, uncomment the entries below (a url turns one into a link).
+export const press: { name: string; url?: string }[] = [
+  // { name: "UC San Diego Today" },   // "Bot inspired by baby turtles can swim under the sand"
+  // { name: "New Atlas" },            // "Sand-swimming robot inspired by baby sea turtles"
+  // { name: "The Robot Report" },     // "Robot digs through sand like a turtle"
+  // { name: "Interesting Engineering" }, // "Turtle-inspired robot detects obstacles in sand"
+  // { name: "IoT World Today" },      // "Turtle-like robot swims under sand"
+  // { name: "Tech Times" },           // "New robot inspired by baby sea turtles"
+  // { name: "Earth.com" },            // "Robot swims under sand like sea turtle hatchlings"
+  // { name: "Knowridge" },            // "New robot explores secrets of sand"
+];
+
+// Dates follow the CV. Note it lists the PhD as March 2022 and the BE as
+// August 2016; earlier drafts of this file said January 2022 and May 2016.
 export const education: Education[] = [
   {
     id: "edu1",
     degree: "PhD, Mechanical Engineering (Robotics)",
     institution: "UC San Diego (Gravish Lab)",
     location: "San Diego, CA",
-    graduationDate: "",
+    graduationDate: "March 2022",
+    honors: ["microMBA, Rady School of Management, 2021"],
     courses: [
       "Robotics & Biologically Inspired Design",
       "Soft & Underactuated Robotics",
@@ -36,66 +49,149 @@ export const education: Education[] = [
   },
   {
     id: "edu2",
+    degree: "MS, Mechanical Engineering",
+    institution: "UC San Diego (Gravish Lab)",
+    location: "San Diego, CA",
+    graduationDate: "June 2018",
+    courses: [
+      "Robotics & Biologically Inspired Design",
+      "Micro Robotics",
+      "Flapping Wing Robots",
+      "Laminate Based Fabrication",
+      "Piezoelectric Actuation",
+    ],
+  },
+  {
+    id: "edu3",
     degree: "BE, Mechanical Engineering",
-    institution: "",
-    location: "India",
-    graduationDate: "",
+    institution: "Punjab Engineering College",
+    location: "Chandigarh, India",
+    graduationDate: "August 2016",
+    honors: ["Chancellor's Gold Medal"],
+    courses: [
+      "Finite Element Analysis",
+      "Computer Aided Design",
+    ],
   },
 ];
 
-// TODO: exact start/end dates weren't listed on the old site. Fill in.
+// Straight from the CV. The two Dexcom rows are the two roles held there, so
+// the progression reads on the page instead of collapsing into one block.
 export const experience: Experience[] = [
   {
     id: "exp1",
-    title: "Senior Medical Device Engineer | Subsystem Technical Lead (Electro-Mechanical Hardware)",
+    title: "Subsystem Technical Lead, Future Wearable Platform (Advanced Technology)",
     company: "Dexcom",
     location: "Boston, MA",
-    startDate: "",
+    startDate: "May 2025",
     endDate: "Present",
+    summary: "Leading the sensor connect subsystem for a new wearable electronics architecture, from process design through build readiness and validation.",
     responsibilities: [
-      "Lead subsystem architecture and validation for a next-generation wearable platform, delivering build-ready hardware and enabling system integration across mechanical, firmware, electronics, and manufacturing teams.",
-      "Define electromechanical subsystem architecture and drive cross-functional system tradeoffs (mechanical / electrical / firmware).",
-      "Own test and validation strategy along with build readiness; lead test method development.",
-      "Bring a robotics background in underactuated systems, sensing, and robot/environment interaction to hardware that must function reliably in unpredictable real-world conditions.",
+      "Own system-level development of a critical electromechanical sensor connect subsystem for a new wearable electronics architecture, spanning process design, build execution, validation strategy, and cross-functional integration.",
+      "Delivered roughly 2,000 subsystem assemblies enabling system integration and validation campaigns by establishing end to end build readiness including fixtures, work instructions, inspection criteria, and technician training.",
+      "Stabilized and transferred a sensitive manufacturing process to an external partner, removing a major feasibility bottleneck and enabling scalable subsystem builds while maintaining IP boundaries and quality expectations.",
+      "Led system-level risk-based validation strategy by translating requirements and failure modes into targeted test methods and decision-ready evidence for program stakeholders.",
+      "Enabled end to end connectivity demonstrations by coordinating production firmware integration under cybersecurity and data protection constraints across hardware and software teams.",
+      "Acted as the on-site technical point of accountability at a partner location, aligning design, manufacturing, testing, and data workflows to drive execution and resolve issues quickly.",
     ],
   },
   {
     id: "exp2",
-    title: "Graduate Researcher",
+    title: "Senior Medical Device Engineer, R&D Technology Evaluation (Advanced Technology)",
+    company: "Dexcom",
+    location: "San Diego, CA",
+    startDate: "December 2022",
+    endDate: "May 2025",
+    summary: "Built test platforms and prototypes for wearable sensor R&D, and led validation across bench, preclinical, and clinical environments.",
+    responsibilities: [
+      "Designed and delivered electromechanical test platforms and prototype systems supporting wearable sensor R&D, integrating precision motion, actuation, and measurement to enable repeatable system characterization from feasibility through DVT.",
+      "Led cross-functional validation efforts across bench, preclinical, and clinical environments for a wearable patch program, enabling an extension of product wear duration from 10 to 15 days.",
+      "Drove mechanical design release quality by leading GD&T and tolerance analysis for multi-part assemblies; produced detailed drawings, defined fits and clearances, and partnered with suppliers on manufacturability and process capability (DFM/DFA).",
+      "Developed bench and preclinical test methods to characterize wear, sensor motion, and stability; executed structured mechanical root-cause investigations and communicated findings to cross-functional stakeholders.",
+      "Accelerated issue resolution by rapidly developing new test methods for failure investigations, including accelerated fatigue characterization on short timelines, and using data-driven experiments to isolate root causes.",
+    ],
+  },
+  {
+    id: "exp3",
+    title: "Senior Robotics Engineer",
+    company: "Adsys Controls Inc.",
+    location: "Irvine, CA",
+    startDate: "April 2022",
+    endDate: "November 2022",
+    summary: "Enclosure architecture for outdoor consumer products, plus performance validation of a precision fast steering mirror system.",
+    responsibilities: [
+      "Designed and prototyped electromechanical assemblies for outdoor consumer products, owning enclosure architecture and rapid design iteration using CAD and additive manufacturing.",
+      "Led testing and performance validation of a precision fast steering mirror system, evaluating stability, repeatability, and alignment through benchtop experimentation.",
+    ],
+  },
+  {
+    id: "exp4",
+    title: "PhD Researcher, Underactuated Robots for Granular Media",
     company: "Gravish Lab, UC San Diego",
     location: "San Diego, CA",
-    startDate: "",
-    endDate: "",
+    startDate: "July 2018",
+    endDate: "March 2022",
+    summary: "Untethered, underactuated robots that move and sense in sand and water, from mechanism architecture through field testing.",
     responsibilities: [
-      "Designed, built, and tested bio-inspired robotic systems (soft, underactuated, and micro-robotic) operating in granular and fluid environments.",
-      "Published in IEEE Robotics and Automation Letters, Advanced Intelligent Systems, and Smart Materials and Structures; work covered by UCSD Today, New Atlas, Interesting Engineering, The Robot Report, Earth.com, IOT World Today, and Tech Times.",
-      "Built dedicated test platforms, including fluidized granular beds, high-speed imaging, and force/impact sensing, to quantitatively characterize robot/environment interaction.",
+      "Owned end to end development of an underactuated robotic system operating in granular and underwater environments, from mechanism architecture through fabrication, integration, and experimental validation.",
+      "Built constrained-volume, untethered electromechanical prototypes integrating actuation and sensing, balancing stiffness, compliance, and robustness to achieve reliable locomotion under granular material load.",
+      "Designed and executed tests using custom experimental setups integrating high-speed imaging, locomotion control, and force sensing to characterize performance limits, failure modes, and robot/environment interactions.",
+      "Developed automated test rigs and data analysis workflows to accelerate hypothesis to result cycles, improve experimental repeatability, and support data-driven iteration across multiple prototype generations.",
+    ],
+  },
+  {
+    id: "exp5",
+    title: "Masters Research, Flapping Wing Actuator Design",
+    company: "Gravish Lab, UC San Diego",
+    location: "San Diego, CA",
+    startDate: "December 2016",
+    endDate: "June 2018",
+    summary: "Penny-scale piezoelectric flapping mechanisms with on-board sensing and closed-loop control.",
+    responsibilities: [
+      "Designed and fabricated penny-scale flapping mechanisms with piezoelectric actuation, engineering lightweight frames from lamination techniques, flexures, and transmissions for high-frequency motion and durability.",
+      "Integrated custom on-board sensing and closed-loop control concepts to study actuator response under environmental perturbations.",
     ],
   },
 ];
 
+// Categories mirror the CV. The two Physical AI entries under Robotics are the
+// only additions: they come from the current projects rather than the CV.
 export const skills: Skill[] = [
   {
-    category: "Robotics & Controls",
-    items: ["ROS / ROS2", "Physical AI", "VLA", "Sim-to-Real (MuJoCo)", "PID Control", "Underactuated & Compliant Mechanisms", "Soft Robotics", "Granular Jamming"],
+    category: "Mechanical Design & Architecture",
+    items: ["System-Level Mechanical Architecture", "Tolerance Analysis", "Load Paths", "Material Selection", "GD&T (ASME Y14.5)", "DFM / DFA"],
   },
   {
-    category: "Hardware & Test Systems",
-    items: ["Electromechanical System Architecture", "Benchtop Test Platform Design", "Automated Test Systems (LabVIEW/MATLAB/Python)", "Real-Time Data Acquisition & Diagnostics", "Piezoelectric Actuators", "Embedded Strain Sensing", "SCM Fabrication", "Laser Micromachining"],
+    category: "Verification, Reliability & Debug",
+    items: ["Mechanical Validation", "Life Testing", "Wear Characterization", "Custom Test Platforms", "Root Cause Analysis", "Risk-Based Test Strategy"],
   },
   {
-    category: "Validation & Reliability",
-    items: ["Verification & Validation (V&V)", "Risk-Based Test Strategy", "DOE / ANOVA", "Reliability Engineering", "Clinical & Bench Study Design", "Failure Mode Analysis"],
+    category: "Robotics & Automation",
+    items: ["Robotic Mechanism & Kinematic Design", "Actuator & Sensor Integration", "Compliant / Adaptive Mechanisms", "Constrained-Volume Assemblies", "Automated Test Platforms", "Haptics", "Soft Robotics", "ROS / ROS2", "Physical AI"],
   },
   {
-    category: "Leadership & Program",
-    items: ["Cross-Functional Technical Leadership", "Subsystem Architecture Ownership", "Build Readiness", "Manufacturing Process Transfer", "Technician Training"],
+    category: "CAD, Analysis & Engineering Tools",
+    items: ["SolidWorks", "Onshape", "PDM Best Practices", "FEA-Informed Sizing (Ansys)", "DOE & Variability Analysis (JMP)"],
+  },
+  {
+    category: "Machine Vision & Imaging",
+    items: ["Cognex In-Sight Explorer", "Camera & Illumination Strategy", "Image Processing for Feature Isolation", "In-Line Process Tools", "High-Speed Imaging"],
+  },
+  {
+    category: "Prototyping & Fabrication",
+    items: ["Machining", "3D Printing", "Laser Cutting", "Molding", "Laminate Fabrication", "Soft-Material Prototyping"],
+  },
+  {
+    category: "Programming",
+    items: ["LabVIEW", "MATLAB", "Python", "C#", "JMP", "Arduino"],
   },
 ];
 
-export const projects: Project[] = [
+const projectList: Project[] = [
   {
     id: "proj1",
+    video: "https://youtu.be/gLu73ShQbVM",
+    videoCaption: "The robot swimming and sensing beneath beach sand.",
     title: "Underactuated Appendage Robot for Swimming & Sensing in Granular Environments",
     category: "Robotics",
     status: "complete",
@@ -378,7 +474,7 @@ export const projects: Project[] = [
   {
     id: "proj11",
     title: "Pupper v3: Boston Robot Hackers Club",
-    category: "Current Platforms",
+    category: "Current Projects",
     status: "in-progress",
     description: "Modifying the Stanford Pupper v3 quadruped with a 5-person hobby team to learn physical-AI skills and build an outreach platform for high schoolers.",
     fullDescription: "Making modifications to the Stanford Pupper v3 quadruped. The goal is to learn physical-AI skills and deploy them on Pupper so it can be used as an outreach and learning project for high schoolers. The team (5 people, part of the Boston Robot Hackers Club) meets weekly to update and upgrade the robot, building on the open-source repo from the Stanford team (github.com/Nate711/pupperv3-monorepo).",
@@ -406,7 +502,7 @@ export const projects: Project[] = [
   {
     id: "proj12",
     title: "Seeed Studio reBOT Arm",
-    category: "Current Platforms",
+    category: "Current Projects",
     status: "in-progress",
     description: "Hands-on with the Seeed Studio reBOT Arm B601 RS (48V QDD motors, 2.5kg payload), the platform used at the Revolute physical-AI hackathon.",
     fullDescription: "Exploring the Seeed Studio reBOT Arm B601 RS as a platform for physical-AI experimentation: leader-arm teleoperation and imitation learning, paired with a reComputer Jetson Orin Nano for on-edge inference. First used while co-organizing the Revolute hackathon in Cambridge, MA.",
@@ -431,9 +527,22 @@ export const projects: Project[] = [
   },
 ];
 
+/* Photos dropped into src/assets/photos/projects/<project id>/ are merged in
+   automatically, so adding project pictures never means editing this file. */
+export const projects: Project[] = projectList.map(p => {
+  const dropped = folderPhotos(`projects/${p.id}`);
+  if (dropped.length === 0) return p;
+  return {
+    ...p,
+    photos: dropped,
+    images: [...(p.images ?? []), ...dropped.map(f => f.src)],
+  };
+});
+
 export const publications: Publication[] = [
   {
     id: "pub1",
+    featured: 2,
     title: "Piezoelectric actuators with on-board sensing for micro-robotic applications",
     authors: ["Shivam Chopra", "Nick Gravish"],
     venue: "Smart Materials and Structures, 28(11), p. 115036",
@@ -444,6 +553,7 @@ export const publications: Publication[] = [
   },
   {
     id: "pub2",
+    featured: 3,
     title: "Granular Jamming Feet Enable Improved Foot-Ground Interactions for Robot Mobility on Deformable Ground",
     authors: ["Shivam Chopra", "Michael T. Tolley", "Nick Gravish"],
     venue: "IEEE Robotics and Automation Letters, 5(3), pp. 3975 to 3981",
@@ -454,8 +564,9 @@ export const publications: Publication[] = [
   },
   {
     id: "pub3",
+    featured: 1,
     title: "Toward Robotic Sensing and Swimming in Granular Environments using Underactuated Appendages",
-    authors: ["Shivam Chopra", "Daniel Vasile", "Siddharth Jadhav", "Michael T. Tolley", "Nick Gravish"],
+    authors: ["Shivam Chopra", "Daniel Vasile", "Saurabh Jadhav", "Michael T. Tolley", "Nick Gravish"],
     venue: "Advanced Intelligent Systems",
     year: "2023",
     abstract: "An untethered robot with compliant, underactuated appendages that swims and senses obstacles in granular media (beach sand): the fastest untethered digging-and-sensing robot at the time, and the first demonstration of a burrowing robot tested on a real beach.",
@@ -471,7 +582,7 @@ export const publications: Publication[] = [
   {
     id: "pub5",
     title: "Terrain-Structure Interaction: A Multi-Physics Simulation Framework for Studying the Response of Soft-Body Interaction with Granular Media",
-    authors: ["Siddharth Jadhav", "Shivam Chopra", "Nick Gravish", "Michael T. Tolley"],
+    authors: ["Saurabh Jadhav", "Shivam Chopra", "Nick Gravish", "Michael T. Tolley"],
     venue: "In Preparation",
     year: "",
     abstract: "A multi-physics simulation framework for studying how soft robotic bodies interact with granular media.",
@@ -479,7 +590,7 @@ export const publications: Publication[] = [
   {
     id: "pub6",
     title: "Stiffness modulation of a soft robotic foot for foot-ground interaction control",
-    authors: ["Shivam Chopra", "Emily Lathrop", "Siddharth Jadhav", "Michael T. Tolley", "Nick Gravish"],
+    authors: ["Shivam Chopra", "Emily Lathrop", "Saurabh Jadhav", "Michael T. Tolley", "Nick Gravish"],
     venue: "ASME IDETC 2019 (Conference Presentation)",
     year: "2019",
     abstract: "Early presentation of stiffness-modulated soft robotic foot design for controlling foot-ground interaction, precursor to the granular jamming foot published in IEEE RA-L.",
@@ -487,7 +598,7 @@ export const publications: Publication[] = [
   {
     id: "pub7",
     title: "Parapodia inspired soft appendages enable robot propulsion in granular media",
-    authors: ["Shivam Chopra", "Siddharth Jadhav", "Michael T. Tolley", "Nick Gravish"],
+    authors: ["Shivam Chopra", "Saurabh Jadhav", "Michael T. Tolley", "Nick Gravish"],
     venue: "Robophysics: Robotics Meets Physics IV, APS March Meeting 2021 (Conference Presentation)",
     year: "2021",
     abstract: "Presentation on parapodia-inspired soft appendages for robot propulsion through granular media.",
@@ -496,7 +607,7 @@ export const publications: Publication[] = [
   {
     id: "pub8",
     title: "Mechanical and actuation asymmetry in soft appendages leads to robotic propulsion in granular media",
-    authors: ["Shivam Chopra", "Siddharth Jadhav", "Michael T. Tolley", "Nick Gravish"],
+    authors: ["Shivam Chopra", "Saurabh Jadhav", "Michael T. Tolley", "Nick Gravish"],
     venue: "Adaptive Motion in Animals and Machines (Conference Presentation)",
     year: "2021",
     abstract: "Shows how input-torque amplitude and appendage stiffness affect propulsion of a model soft appendage in granular media, using a hybrid soft/stiff appendage and a proposed extension of Resistive Force Theory (RFT) to soft appendages.",
@@ -504,6 +615,32 @@ export const publications: Publication[] = [
   },
 ];
 
-// TODO: no personal photos migrated yet. Add images and captions here to
-// populate the Gallery's "general" tab.
-export const galleryImages: { src: string; caption: string }[] = [];
+/* ──────────────────────────────────────────────────────────────────────────
+   PHOTOS
+   Nothing below needs editing. Paste image files into these folders and they
+   appear on the site, sorted by filename, with the filename as the caption:
+
+     src/assets/photos/about/           → About section rotator
+     src/assets/photos/gallery/         → Gallery section, "general" tab
+     src/assets/photos/hero/            → small rotating panel beside the intro
+     src/assets/photos/projects/proj1/  → that project's card and modal
+     src/assets/photos/projects/proj2/     (folder name = the project id above)
+
+   See src/lib/photos.ts for naming and ordering rules.
+   ────────────────────────────────────────────────────────────────────────── */
+
+export const galleryImages: { src: string; caption?: string }[] = folderPhotos('gallery');
+
+// Hides itself until there is at least one real photo.
+export const heroSlideshow: { src: string; caption?: string }[] = folderPhotos('hero');
+
+// The two About frames. Both show framed placeholders while empty, so the
+// slots stay visible on the page.
+const withPlaceholders = (photos: { src: string; caption?: string }[]) =>
+  photos.length > 0 ? photos : [{ src: '' }, { src: '' }, { src: '' }];
+
+/** Work: lab, test rigs, field tests. */
+export const aboutFieldPhotos = withPlaceholders(folderPhotos('about/field'));
+
+/** Life: Shimla, the water, the outdoors. */
+export const aboutLifePhotos = withPlaceholders(folderPhotos('about/life'));

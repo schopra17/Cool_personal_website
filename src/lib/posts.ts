@@ -1,4 +1,5 @@
 import type { BlogPost } from '../types';
+import { folderPhotos } from './photos';
 
 /**
  * Every .md file in src/content/blog is bundled at build time. Adding a post
@@ -69,14 +70,19 @@ function build(): BlogPost[] {
     const slug = path.split('/').pop()!.replace(/\.md$/, '');
     const { meta, body } = parseFrontmatter(raw);
 
+    // Photos dropped in src/assets/photos/news/<slug>/ attach themselves; the
+    // first doubles as the card cover unless frontmatter names one.
+    const photos = folderPhotos(`news/${slug}`);
+
     return {
       slug,
       title: (meta.title as string) || slug,
       date: (meta.date as string) || '',
       excerpt: (meta.excerpt as string) || firstParagraph(body),
       tags: (meta.tags as string[]) || [],
-      cover: meta.cover as string | undefined,
-      coverAlt: meta.coverAlt as string | undefined,
+      cover: (meta.cover as string | undefined) ?? photos[0]?.src,
+      coverAlt: (meta.coverAlt as string | undefined) ?? photos[0]?.caption,
+      photos,
       draft: meta.draft === true,
       readingTime: readingTime(body),
       body,
