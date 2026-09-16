@@ -447,8 +447,8 @@ nav {
    grid-column places it between the two photos visually. */
 .about-grid {
   display: grid;
-  grid-template-columns: clamp(140px, 17%, 205px) 1fr clamp(140px, 17%, 205px);
-  gap: 2.5rem;
+  grid-template-columns: clamp(200px, 23%, 310px) 1fr clamp(200px, 23%, 310px);
+  gap: 2.2rem;
   align-items: start;
 }
 .about-bio         { grid-column: 2; grid-row: 1; }
@@ -1076,7 +1076,7 @@ html.dark ::-webkit-scrollbar-thumb { background: var(--border-2); }
   white-space: nowrap;
 }
 
-/* Side-column panels (news, current platforms).
+/* Side-column panels (news, current projects).
    Three sizes only: a small mono meta line, a readable headline, and body
    copy at a real reading size. The meta line is the ONLY uppercase mono
    text here — headlines and descriptions were being set at 10-12px, which
@@ -1393,9 +1393,12 @@ section[id] { scroll-margin-top: 5rem; }
 }
 .pub-toggle:hover { opacity: 0.7; }
 
-/* The About rotator sits beside a portrait headshot, so it matches that
-   proportion instead of the hero panel's landscape crop. */
-.about-photo-right .hero-slideshow { aspect-ratio: 3 / 4; }
+/* The About frames take whatever mix of portrait and landscape shots get
+   pasted in, so the box is square and the photo is shown whole rather than
+   cropped to a portrait slot. A square wastes the least space across both
+   orientations, and nothing gets cut off either way. */
+.about-photo .hero-slideshow { aspect-ratio: 1 / 1; }
+.about-photo .hero-slide img { object-fit: contain; }
 
 /* Profile links under the hero CTAs. Deliberately quieter than the buttons. */
 .hero-links {
@@ -1409,3 +1412,86 @@ section[id] { scroll-margin-top: 5rem; }
 .hero-links a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
 .hero-links a:hover { color: var(--accent); }
 .hero-links-sep { margin: 0 0.6rem; opacity: 0.45; }
+
+/* ── Video embed ──
+   16:9 box that scales with its column, the way a Google Sites video block
+   behaves. Same chrome as the photo frames. */
+.video-embed {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--ink);
+  border: 1.5px solid var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+.video-caption {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-top: 0.45rem;
+  line-height: 1.5;
+}
+
+/* Photos attached to a news post */
+.post-photos { margin-top: 2.5rem; }
+.post-photos-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.9rem;
+}
+
+/* ── Project category groups ──
+   The old group label was 11px mono, which read as a caption rather than a
+   division. These are banded headers: a heavy rule, the group's colour, a
+   real heading and a count, with enough air around them that a new section
+   registers before anything is read. */
+.proj-group { margin-bottom: 4.5rem; scroll-margin-top: 5rem; }
+.proj-group:last-child { margin-bottom: 0; }
+.proj-group-head {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-top: 3px solid var(--ink);
+  padding-top: 0.85rem;
+  margin-bottom: 1.6rem;
+}
+.proj-group-swatch {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--ink);
+  flex-shrink: 0;
+}
+.proj-group-name {
+  font-size: 1.45rem;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  margin-right: auto;
+}
+.proj-group-count {
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
+@media (max-width: 520px) {
+  .proj-group { margin-bottom: 3rem; }
+  .proj-group-name { font-size: 1.2rem; }
+}
+
+/* Clips behave exactly like stills wherever media is shown. */
+.hero-slide video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.about-photo .hero-slide video { object-fit: contain; }
+.bench-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.post-figure video { width: 100%; height: auto; display: block; }
+video.post-cover { width: 100%; height: auto; display: block; }
+.blog-card-cover video { width: 100%; height: 100%; object-fit: cover; display: block; }

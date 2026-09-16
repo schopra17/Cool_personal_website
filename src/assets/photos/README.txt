@@ -4,12 +4,19 @@ WHERE TO PASTE PHOTOS
 Drop image files into the folders below. They show up on the site
 automatically, in filename order. No code to edit.
 
-  about/            The rotating panel next to your bio in the About section.
-                    Portrait shots work best here (it is a tall frame).
-                    While this folder is empty you see numbered placeholders.
+  about/field/      LEFT frame in the About section: work photos. Lab, test
+                    rigs, beach tests, robots mid-build, conferences.
+                    Any orientation: the frame shows the whole photo.
 
-  gallery/          The Gallery section, "general" tab. Any mix of shapes;
-                    they lay out as a masonry grid.
+  about/life/       RIGHT frame in the About section: Shimla and the Himalayas,
+                    surfing, sailing, hiking, travel.
+                    Any orientation: the frame shows the whole photo.
+
+                    Both frames show numbered placeholders while empty.
+
+  gallery/          The Gallery section, which is switched OFF right now
+                    because there was nothing in it. Add photos here and ask
+                    for the section to be turned back on.
 
   hero/             The small rotating panel beside your name at the top.
                     This panel stays hidden until you add at least one photo.
@@ -32,7 +39,16 @@ Filenames set the order AND the caption.
 Leading numbers are stripped from the caption. Dashes and underscores become
 spaces. Use 01, 02, 03 prefixes so the order is predictable.
 
-Formats: jpg, jpeg, png, webp, avif, gif.
+Formats: jpg, jpeg, png, webp, avif, gif, and mp4.
+
+VIDEO CLIPS
+-----------
+Drop an .mp4 in any of these folders and it plays in place, silent and
+looping, exactly where a photo would sit.
+
+Please do NOT paste GIFs or iPhone .MOV files straight in. They are enormous:
+one 27MB GIF became a 0.7MB mp4 that looks the same. If you have a GIF or a
+.MOV, just ask and it will be converted for you.
 
 
 PROJECT FOLDERS

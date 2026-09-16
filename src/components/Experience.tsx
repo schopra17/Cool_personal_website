@@ -4,10 +4,11 @@ import { Reveal } from './Reveal';
 
 /* Five roles at six bullets each was a wall of text nobody scrolls through.
    Each row now collapses to title, employer, dates and a one-line summary —
-   about four lines — and the detail opens on request. The current role starts
-   open so the affordance is obvious. */
+   about four lines — and the detail opens on request. */
 export default function Experience() {
-  const [open, setOpen] = useState<string[]>(experience.length ? [experience[0].id] : []);
+  // Everything starts closed: the section should read as a clean list of
+  // roles, not open on a wall of bullets.
+  const [open, setOpen] = useState<string[]>([]);
   const toggle = (id: string) =>
     setOpen(o => (o.includes(id) ? o.filter(x => x !== id) : [...o, id]));
 

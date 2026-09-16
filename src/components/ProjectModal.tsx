@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Project } from '../types';
+import VideoEmbed from './VideoEmbed';
+import Media, { isVideo } from './Media';
 
 interface Props {
   project: Project;
@@ -13,7 +15,14 @@ export default function ProjectModal({ project, onClose }: Props) {
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const boxRef = useRef<HTMLDivElement>(null);
-  const hasImages = project.images && project.images.length > 0;
+
+  // Prefer the captioned list; fall back to plain srcs, then the thumbnail.
+  const photos: { src: string; caption?: string; video?: boolean }[] =
+    project.photos?.length
+      ? project.photos
+      : (project.images?.length
+          ? project.images.map(src => ({ src }))
+          : project.thumbnail ? [{ src: project.thumbnail }] : []);
 
   // Escape closes (the lightbox first, then the dialog) and Tab is trapped
   // inside the dialog so keyboard users can't wander into the page behind it.
@@ -100,54 +109,68 @@ export default function ProjectModal({ project, onClose }: Props) {
             </div>
           </div>
 
-          {/* ── Image gallery strip ── */}
-          {hasImages && (
+          {/* ── Video ── */}
+          {project.video && (
             <div style={{ padding: '1.2rem 1.8rem 0' }}>
-              <p className="font-mono" style={{ fontSize: '0.65rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '0.6rem' }}>
-                Photos
+              <p className="font-mono" style={{ fontSize: '0.65rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '0.7rem' }}>
+                Video
               </p>
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: project.images!.length === 1
-                  ? '1fr'
-                  : project.images!.length === 2
-                  ? '1fr 1fr'
-                  : 'repeat(3, 1fr)',
-                gap: '0.5rem',
-              }}>
-                {project.images!.map((src, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => setLightboxSrc(src)}
-                    aria-label={`Enlarge photo ${idx + 1}`}
-                    style={{
-                      borderRadius: 3,
-                      overflow: 'hidden',
-                      border: '1px solid var(--border)',
-                      cursor: 'zoom-in',
-                      aspectRatio: '4/3',
-                      padding: 0,
-                      background: 'none',
-                      display: 'block',
-                    }}
-                    className="gallery-tile"
-                  >
-                    <img
-                      src={src}
-                      alt={`${project.title} photo ${idx + 1}`}
-                      loading="lazy"
-                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'transform 0.3s ease' }}
-                    />
-                  </button>
-                ))}
-              </div>
+              <VideoEmbed url={project.video} title={project.title} caption={project.videoCaption} />
             </div>
           )}
 
-          {/* Fallback: single thumbnail */}
-          {!hasImages && project.thumbnail && (
+          {/* ── Photos ──
+              Each one full width and uncropped, stacked, with its caption.
+              This is the place people actually look at the images, so nothing
+              is scaled down into a thumbnail or cut to fit a grid cell. */}
+          {photos.length > 0 && (
             <div style={{ padding: '1.2rem 1.8rem 0' }}>
-              <img src={project.thumbnail} alt={project.title} style={{ width: '100%', borderRadius: 3, border: '1px solid var(--border)' }} />
+              <p className="font-mono" style={{ fontSize: '0.65rem', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--accent)', marginBottom: '0.7rem' }}>
+                {photos.length === 1 ? 'Photo' : `Photos (${photos.length})`}
+              </p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.4rem' }}>
+                {photos.map((photo, idx) => (
+                  <figure key={idx}>
+                    {isVideo(photo) ? (
+                      /* A clip plays in place; there is nothing to enlarge. */
+                      <div style={{
+                        background: 'var(--paper-2)', border: '1.5px solid var(--border)',
+                        borderRadius: 3, overflow: 'hidden', lineHeight: 0,
+                      }}>
+                        <Media
+                          item={photo}
+                          alt={photo.caption || `${project.title} clip ${idx + 1}`}
+                          eager={idx === 0}
+                          style={{ width: '100%', height: 'auto', display: 'block' }}
+                        />
+                      </div>
+                    ) : (
+                      <button
+                        onClick={() => setLightboxSrc(photo.src)}
+                        aria-label={photo.caption ? `Enlarge: ${photo.caption}` : `Enlarge photo ${idx + 1}`}
+                        style={{
+                          display: 'block', width: '100%', padding: 0,
+                          background: 'var(--paper-2)',
+                          border: '1.5px solid var(--border)',
+                          borderRadius: 3, overflow: 'hidden', cursor: 'zoom-in',
+                        }}
+                      >
+                        <Media
+                          item={photo}
+                          alt={photo.caption || `${project.title} photo ${idx + 1}`}
+                          eager={idx === 0}
+                          style={{ width: '100%', height: 'auto', display: 'block' }}
+                        />
+                      </button>
+                    )}
+                    {photo.caption && (
+                      <figcaption style={{ fontSize: '0.78rem', color: 'var(--muted)', marginTop: '0.45rem', lineHeight: 1.5 }}>
+                        {photo.caption}
+                      </figcaption>
+                    )}
+                  </figure>
+                ))}
+              </div>
             </div>
           )}
 

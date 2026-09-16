@@ -5,11 +5,15 @@ import { useHashRoute, goHome, scrollToSection } from '../lib/useHashRoute';
 // Five destinations, mirroring the old Google Site. Skills, Education and News
 // still have their own sections on the page; they sit inside this journey
 // rather than competing with it in a nine-item menu.
+//
+// Gallery is off the site for now: its "projects" tab only repeated photos
+// already shown in Projects, and the "general" tab had nothing in it. The
+// component and src/assets/photos/gallery/ are still there; re-add the link
+// here and <Gallery /> in App.tsx once there are photos worth a section.
 const LINKS = [
   { id: 'about',        label: 'About' },
   { id: 'experience',   label: 'Experience' },
   { id: 'projects',     label: 'Projects' },
-  { id: 'gallery',      label: 'Gallery' },
   { id: 'publications', label: 'Publications' },
   { id: 'contact',      label: 'Contact' },
 ];

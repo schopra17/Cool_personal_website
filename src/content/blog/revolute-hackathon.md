@@ -18,3 +18,5 @@ The event brought together 30 participants across teams, backed by about $15,000
 Over the two days, teams went from an intro hardware and software tutorial through hacking, a science-fair-style demo and judging session, and final submissions (GitHub repo, documentation, and a one-minute video), with prizes and judging from engineers across Autodesk, Minoic Intelligence, Elemental Machines, Walden Robotics, and Vassar Robotics.
 
 Revolute's goal wasn't just competition. It was building Boston into a hub for the robotics and physical AI community.
+
+[See photos and the recap on LinkedIn](https://lnkd.in/p/gSkvN3-g)

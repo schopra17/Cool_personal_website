@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import Media from './Media';
 
-export interface Slide { src: string; caption?: string }
+export interface Slide { src: string; caption?: string; video?: boolean }
 
 interface Props {
   slides: Slide[];
@@ -53,7 +54,7 @@ export default function PhotoSlideshow({ slides, title, placeholders = false, in
           {shown.map((s, i) => (
             <div key={i} className="hero-slide" style={{ opacity: i === index ? 1 : 0 }} aria-hidden={i !== index}>
               {s.src ? (
-                <img src={s.src} alt={s.caption ?? ''} loading={i === 0 ? 'eager' : 'lazy'} />
+                <Media item={s} alt={s.caption ?? ''} eager={i === 0} />
               ) : (
                 <div className="slide-placeholder">
                   <span className="slide-placeholder-frame" aria-hidden="true" />

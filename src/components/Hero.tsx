@@ -2,6 +2,7 @@ import { personalInfo, projects, press } from '../data/portfolioData';
 import { posts, formatDate } from '../lib/posts';
 import { navigate, scrollToSection } from '../lib/useHashRoute';
 import PhotoSlideshow from './PhotoSlideshow';
+import Media from './Media';
 import { heroSlideshow } from '../data/portfolioData';
 
 /* The reference desktop had a now-playing panel and a system monitor. Same
@@ -12,7 +13,7 @@ export default function Hero() {
   const scroll = (id: string) => scrollToSection(id);
 
   const latest = posts[0];
-  const currentPlatforms = projects.filter(p => p.category === 'Current Platforms');
+  const currentProjects = projects.filter(p => p.category === 'Current Projects');
 
   return (
     <section id="hero" className="hero-section">
@@ -137,21 +138,21 @@ export default function Hero() {
             )}
 
             {/* Current platforms */}
-            {currentPlatforms.length > 0 && (
+            {currentProjects.length > 0 && (
               <div className="win">
                 <div className="win-bar">
                   <div className="win-dots" aria-hidden="true">
                     <span className="win-dot win-dot-live" />
                     <span className="win-dot" />
                   </div>
-                  <span className="win-title">current platforms</span>
+                  <span className="win-title">current projects</span>
                 </div>
                 <div className="win-body" style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
-                  {currentPlatforms.map(p => (
+                  {currentProjects.map(p => (
                     <div key={p.id} style={{ display: 'flex', gap: '0.7rem', alignItems: 'flex-start' }}>
-                      {p.images?.[0] && (
+                      {p.photos?.[0] && (
                         <div className="bench-thumb" aria-hidden="true">
-                          <img src={p.images[0]} alt="" />
+                          <Media item={p.photos[0]} alt="" />
                         </div>
                       )}
                       <div>
@@ -160,7 +161,7 @@ export default function Hero() {
                       </div>
                     </div>
                   ))}
-                  <button className="bench-link font-mono" onClick={() => scroll('current-platforms')}>
+                  <button className="bench-link font-mono" onClick={() => scroll('current-projects')}>
                     Open ↗
                   </button>
                 </div>

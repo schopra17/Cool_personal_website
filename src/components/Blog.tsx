@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { posts, allTags, formatDate } from '../lib/posts';
 import { navigate } from '../lib/useHashRoute';
 import { Reveal } from './Reveal';
+import Media from './Media';
 
 export default function Blog() {
   const [tag, setTag] = useState<string | null>(null);
@@ -55,7 +56,7 @@ export default function Blog() {
                 >
                   {p.cover && (
                     <div className="blog-card-cover">
-                      <img src={p.cover} alt={p.coverAlt ?? ''} loading="lazy" />
+                      <Media item={{ src: p.cover }} alt={p.coverAlt ?? ''} />
                     </div>
                   )}
 

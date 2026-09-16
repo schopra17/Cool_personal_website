@@ -21,13 +21,22 @@
  * Camera-style names (IMG_4821, DSC01234, PXL_2024...) get no caption, so a
  * straight phone dump stays clean.
  *
- * FORMATS  jpg, jpeg, png, webp, avif, gif.
+ * FORMATS  Images: jpg, jpeg, png, webp, avif, gif.
+ * Video: mp4. Clips play inline, muted and looping, like an animated GIF but
+ * a fraction of the size. Drop a .mp4 in any of these folders and it is
+ * treated as just another slide. (Convert a GIF or a phone .MOV first, see
+ * CLAUDE.md; a raw GIF still works but can be 30x bigger.)
  */
 
-export interface Photo { src: string; caption?: string }
+export interface Photo {
+  src: string;
+  caption?: string;
+  /** true when src is a video clip rather than a still. */
+  video?: boolean;
+}
 
 const files = import.meta.glob(
-  '../assets/photos/**/*.{jpg,jpeg,JPG,JPEG,png,PNG,webp,WEBP,avif,AVIF,gif,GIF}',
+  '../assets/photos/**/*.{jpg,jpeg,JPG,JPEG,png,PNG,webp,WEBP,avif,AVIF,gif,GIF,mp4,MP4}',
   { eager: true, query: '?url', import: 'default' }
 ) as Record<string, string>;
 
@@ -47,8 +56,12 @@ export function folderPhotos(folder: string): Photo[] {
   return Object.keys(files)
     .filter(path => path.startsWith(prefix) && !path.slice(prefix.length).includes('/'))
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }))
-    .map(path => ({
-      src: files[path],
-      caption: captionFrom(path.slice(prefix.length)),
-    }));
+    .map(path => {
+      const name = path.slice(prefix.length);
+      return {
+        src: files[path],
+        caption: captionFrom(name),
+        video: /\.mp4$/i.test(name),
+      };
+    });
 }

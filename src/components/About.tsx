@@ -1,18 +1,17 @@
-import { personalInfo, aboutSlideshow } from '../data/portfolioData';
+import { aboutFieldPhotos, aboutLifePhotos } from '../data/portfolioData';
 import { Reveal } from './Reveal';
 import PhotoSlideshow from './PhotoSlideshow';
 
+/* Two rotating frames flanking the bio: work on one side, life on the other,
+   which is the same split the bio itself makes. The headshot is not repeated
+   here, it already carries the hero. */
 export default function About() {
-  // Right-hand slot is optional — until a path is set it renders as a
-  // labelled placeholder rather than a broken image.
-  const second = personalInfo.photo2?.trim();
-
   return (
     <section id="about" className="section-pad" style={{ borderBottom: '1px solid var(--border)' }}>
       <div className="max-w-6xl mx-auto px-6">
         <Reveal>
           <p className="label">About</p>
-          <h2 className="heading">Engineer. Researcher. Builder.</h2>
+          <h2 className="heading">Engineer. Researcher. Explorer.</h2>
         </Reveal>
 
         {/* Photo / bio / photo. The bio is written first in the DOM so reading
@@ -43,24 +42,13 @@ export default function About() {
 
           <div className="about-photo about-photo-left">
             <Reveal delay={120}>
-              <figure className="photo-frame">
-                <img src={personalInfo.photo} alt="Shivam Chopra" />
-              </figure>
+              <PhotoSlideshow slides={aboutFieldPhotos} title="in the field" placeholders />
             </Reveal>
           </div>
 
           <div className="about-photo about-photo-right">
             <Reveal delay={180}>
-              {second ? (
-                <figure className="photo-frame">
-                  <img src={second} alt="Shivam in the lab" />
-                </figure>
-              ) : (
-                /* Rotating slot for lab, field, and out-of-office shots. Fill in
-                   aboutSlideshow in portfolioData.ts and these frames become
-                   photos with captions. */
-                <PhotoSlideshow slides={aboutSlideshow} title="in the field" placeholders />
-              )}
+              <PhotoSlideshow slides={aboutLifePhotos} title="shimla & the outdoors" placeholders />
             </Reveal>
           </div>
         </div>

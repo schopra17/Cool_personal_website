@@ -155,7 +155,7 @@ export const experience: Experience[] = [
 ];
 
 // Categories mirror the CV. The two Physical AI entries under Robotics are the
-// only additions: they come from the current platforms rather than the CV.
+// only additions: they come from the current projects rather than the CV.
 export const skills: Skill[] = [
   {
     category: "Mechanical Design & Architecture",
@@ -190,6 +190,8 @@ export const skills: Skill[] = [
 const projectList: Project[] = [
   {
     id: "proj1",
+    video: "https://youtu.be/gLu73ShQbVM",
+    videoCaption: "The robot swimming and sensing beneath beach sand.",
     title: "Underactuated Appendage Robot for Swimming & Sensing in Granular Environments",
     category: "Robotics",
     status: "complete",
@@ -472,7 +474,7 @@ const projectList: Project[] = [
   {
     id: "proj11",
     title: "Pupper v3: Boston Robot Hackers Club",
-    category: "Current Platforms",
+    category: "Current Projects",
     status: "in-progress",
     description: "Modifying the Stanford Pupper v3 quadruped with a 5-person hobby team to learn physical-AI skills and build an outreach platform for high schoolers.",
     fullDescription: "Making modifications to the Stanford Pupper v3 quadruped. The goal is to learn physical-AI skills and deploy them on Pupper so it can be used as an outreach and learning project for high schoolers. The team (5 people, part of the Boston Robot Hackers Club) meets weekly to update and upgrade the robot, building on the open-source repo from the Stanford team (github.com/Nate711/pupperv3-monorepo).",
@@ -500,7 +502,7 @@ const projectList: Project[] = [
   {
     id: "proj12",
     title: "Seeed Studio reBOT Arm",
-    category: "Current Platforms",
+    category: "Current Projects",
     status: "in-progress",
     description: "Hands-on with the Seeed Studio reBOT Arm B601 RS (48V QDD motors, 2.5kg payload), the platform used at the Revolute physical-AI hackathon.",
     fullDescription: "Exploring the Seeed Studio reBOT Arm B601 RS as a platform for physical-AI experimentation: leader-arm teleoperation and imitation learning, paired with a reComputer Jetson Orin Nano for on-edge inference. First used while co-organizing the Revolute hackathon in Cambridge, MA.",
@@ -528,8 +530,13 @@ const projectList: Project[] = [
 /* Photos dropped into src/assets/photos/projects/<project id>/ are merged in
    automatically, so adding project pictures never means editing this file. */
 export const projects: Project[] = projectList.map(p => {
-  const dropped = folderPhotos(`projects/${p.id}`).map(f => f.src);
-  return dropped.length ? { ...p, images: [...(p.images ?? []), ...dropped] } : p;
+  const dropped = folderPhotos(`projects/${p.id}`);
+  if (dropped.length === 0) return p;
+  return {
+    ...p,
+    photos: dropped,
+    images: [...(p.images ?? []), ...dropped.map(f => f.src)],
+  };
 });
 
 export const publications: Publication[] = [
@@ -627,8 +634,13 @@ export const galleryImages: { src: string; caption?: string }[] = folderPhotos('
 // Hides itself until there is at least one real photo.
 export const heroSlideshow: { src: string; caption?: string }[] = folderPhotos('hero');
 
-// Shows framed placeholders while empty, so the slot stays visible.
-export const aboutSlideshow: { src: string; caption?: string }[] = (() => {
-  const dropped = folderPhotos('about');
-  return dropped.length > 0 ? dropped : [{ src: '' }, { src: '' }, { src: '' }, { src: '' }];
-})();
+// The two About frames. Both show framed placeholders while empty, so the
+// slots stay visible on the page.
+const withPlaceholders = (photos: { src: string; caption?: string }[]) =>
+  photos.length > 0 ? photos : [{ src: '' }, { src: '' }, { src: '' }];
+
+/** Work: lab, test rigs, field tests. */
+export const aboutFieldPhotos = withPlaceholders(folderPhotos('about/field'));
+
+/** Life: Shimla, the water, the outdoors. */
+export const aboutLifePhotos = withPlaceholders(folderPhotos('about/life'));

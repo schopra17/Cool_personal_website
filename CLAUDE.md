@@ -66,29 +66,62 @@ Almost everything is data, not markup. Prefer editing data over components.
 into a folder and it appears on the site.
 
 ```
-src/assets/photos/about/            About section rotator (portrait crop)
-src/assets/photos/gallery/          Gallery section, "general" tab
+src/assets/photos/about/field/      About, LEFT frame: work photos
+src/assets/photos/about/life/       About, RIGHT frame: Shimla, outdoors
+src/assets/photos/gallery/          Gallery section (not currently rendered)
 src/assets/photos/hero/             Panel beside the name, hidden while empty
+src/assets/photos/news/<slug>/      Under that post; first one is its card cover
 src/assets/photos/projects/<id>/    id matches a project id, e.g. proj1
 ```
+
+**Videos**: a `.mp4` in any of these folders is treated as another slide and
+plays inline, muted and looping, via `Media.tsx`. Never commit a GIF or a phone
+`.MOV`: they were 30x to 100x larger for the same clip (91MB of GIFs became
+3.7MB of MP4; two 14MB .MOVs became 0.8 and 1.4MB). Convert first:
+
+```bash
+ffmpeg -nostdin -i in.gif -movflags +faststart -pix_fmt yuv420p \
+  -vf "scale='trunc(min(1280,iw)/2)*2':-2:flags=lanczos" \
+  -c:v libx264 -preset slow -crf 26 -an out.mp4
+```
+
+`trunc(.../2)*2` matters: x264 refuses odd widths with yuv420p. `-nostdin`
+matters in a shell loop, or ffmpeg eats the loop's input and mangles filenames.
+
+**Oversized stills**: downscale to 1800px long edge. Use ffmpeg for ordinary
+files, but **use `sips` for iPhone photos**: they carry an embedded HEVC gain
+map as a second stream, and ffmpeg's `-map 0:v:0` picks the 512x512 gain map
+instead of the photo, silently producing a 2KB thumbnail.
+
+```bash
+sips -Z 1800 -s format jpeg -s formatOptions 80 \
+  -s profile '/System/Library/ColorSync/Profiles/sRGB Profile.icc' in.jpg --out in.jpg
+```
+
+`sips -Z` will UPSCALE a small image, so check the long edge first.
 
 Filenames drive order and captions: `01-beach-test.jpg` sorts first and
 captions "beach test"; `IMG_4821.jpg` gets no caption (camera-style names are
 ignored). `src/assets/photos/README.txt` is the user-facing version of this,
 and each project folder has a README.txt naming its project.
 
-Anything still in `public/gallery/` is leftover from the fork and is not
-referenced. Shivam has been asked twice about deleting it and has not answered,
-so leave it alone unless he says so.
+`public/gallery/` is empty and carries a README pointing here; the fork's 25
+photos were deleted (18MB). `public/doppler.jpg` is also an unreferenced fork
+leftover, still present.
 
 ---
 
 ## Page structure
 
 `src/App.tsx` renders, in order: Hero, About, Experience, Projects, Skills,
-Gallery, Blog (News), Education, Publications, Contact.
+Blog (News), Education, Publications, Contact.
 
-The nav is deliberately **five items**: About, Experience, Projects, Gallery,
+`src/components/Gallery.tsx` exists but is **not rendered**: its "projects"
+tab only repeated photos already shown in Projects and its "general" tab was
+empty, so the section was removed. Re-add `<Gallery />` in App.tsx and its nav
+link once `src/assets/photos/gallery/` has photos worth a section.
+
+The nav is deliberately **five items**: About, Experience, Projects,
 Publications, Contact. Skills, News, and Education are sections on the page but
 not in the menu, matching the old Google Site's shape. **News must not be added
 to the nav**, that was an explicit instruction.
@@ -130,12 +163,26 @@ The page was too long to scroll, so three sections collapse by default. Keep
 this pattern when adding content.
 
 - **Experience**: each role shows title, meta line, and a one-line `summary`;
-  bullets hide behind a "Detail" toggle. First role starts open.
+  bullets hide behind a "Detail" toggle. All start closed.
 - **Publications**: only papers with a `featured: 1|2|3` rank show; the rest
   sit behind "Read more: Further publications". Abstracts open individually.
 - **Projects**: cards open a dialog rather than expanding inline.
 
 ---
+
+### Images: whole, not cropped
+
+Project cards show ONE lead image in a 16:10 box with `object-fit: contain`,
+and the modal stacks every photo full width at natural height. About frames are
+square with `contain` too. This is deliberate: about half of Shivam's images
+are annotated technical figures, and a figure with its labels cropped off is
+worthless. The hero panel and gallery tiles still use `cover`.
+
+Card colour is per CATEGORY (`GROUP_HUES` indexed by group), not per card, so
+every card in a group shares a hue and matches its banded header swatch.
+
+A project may set `video` (any YouTube URL or bare id) plus `videoCaption`;
+`VideoEmbed.tsx` renders a 16:9 youtube-nocookie iframe at the top of the modal.
 
 ## Decisions worth knowing
 
@@ -147,7 +194,7 @@ this pattern when adding content.
   governed by UCSD or grant terms, so he should check with Nick Gravish first.
 - **Placeholders**: empty photo slots render as designed framed slots, not
   emoji on grey, and never as developer instructions. The hero panel hides
-  itself entirely when empty; About and Gallery show placeholders on purpose.
+  itself entirely when empty; the two About frames show placeholders on purpose.
 - **Data discrepancies** between the CV and earlier hand edits, CV won in each
   case and it is flagged in a comment in `portfolioData.ts`: PhD March 2022 (not
   January), BE August 2016 (not May). The CV says Cambridge MA but the site says
@@ -183,6 +230,4 @@ print(' '.join(x[1:-1] for x in re.findall(r'\((?:[^()\\\\]|\\\\.)*\)', t)))
 
 ## Known issues
 
-- `public/gallery/` holds unreferenced fork photos (see above).
-- `BLOG.md` and `BLOG-SETUP.md` are from the fork and describe the Supabase
-  comments flow that is no longer wired up.
+- `public/doppler.jpg` is an unreferenced leftover from the fork.

@@ -3,7 +3,13 @@ export interface Project {
   title: string;
   category: string;
   thumbnail?: string;
-  images?: string[];      // photo strip in card + gallery in modal
+  images?: string[];      // plain srcs, used by the Gallery section
+  /** Same photos with captions, filled in from src/assets/photos/projects/<id>.
+   *  The first is the card image; the modal lists them all. */
+  photos?: { src: string; caption?: string }[];
+  /** YouTube link or bare id. Embedded at the top of the project modal. */
+  video?: string;
+  videoCaption?: string;
   skills?: string[];      // skill tags shown at bottom of modal
   description: string;
   fullDescription: string;
@@ -66,6 +72,8 @@ export interface BlogPost {
   tags: string[];
   cover?: string;          // path under /public, e.g. /blog/rover.jpg
   coverAlt?: string;
+  /** Photos from src/assets/photos/news/<slug>/, shown under the post. */
+  photos?: { src: string; caption?: string }[];
   draft: boolean;          // draft: true keeps it off the live site
   readingTime: number;     // minutes
   body: string;            // markdown, frontmatter stripped
