@@ -243,8 +243,14 @@ Nothing built is committed: the Action runs typecheck + build and publishes
   rules. Do not switch to history routing without adding a 404.html fallback.
 - DNS is Cloudflare. Records must be **DNS only (grey cloud)** and SSL/TLS
   mode **Full**; Flexible causes a redirect loop with Pages.
-- `www` still points at Google Sites (`ghs.googlehosted.com`) until Shivam
-  migrates it.
+- `www` is a CNAME to `schopra17.github.io` (DNS only); GitHub redirects it to
+  the apex. Google Sites no longer serves the domain. Keep the
+  `google-site-verification` TXT record: it is only for Search Console.
+- If a certificate never issues, removing and re-adding the custom domain via
+  `gh api -X PUT repos/schopra17/Cool_personal_website/pages -f cname=...`
+  restarts the request. **Do not** temporarily set `www` as the primary
+  domain: GitHub keeps redirecting apex to www for several minutes after
+  switching back, which takes the site down.
 
 ## Known issues
 
