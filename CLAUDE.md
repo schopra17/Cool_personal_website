@@ -228,6 +228,24 @@ print(' '.join(x[1:-1] for x in re.findall(r'\((?:[^()\\\\]|\\\\.)*\)', t)))
 "
 ```
 
+## Deployment
+
+GitHub Pages, built by `.github/workflows/deploy.yml` on every push to `main`.
+Nothing built is committed: the Action runs typecheck + build and publishes
+`dist/`.
+
+- Custom domain lives in `public/CNAME` (`shivamchopra.net`), not just in the
+  GitHub UI, so a redeploy cannot wipe it.
+- Vite `base` is left at `/` because the site is served from a domain root. If
+  it ever moves to `username.github.io/<repo>/`, `base` must be set or every
+  asset 404s.
+- Hash routing (`#/project/...`) is why this works on Pages with no rewrite
+  rules. Do not switch to history routing without adding a 404.html fallback.
+- DNS is Cloudflare. Records must be **DNS only (grey cloud)** and SSL/TLS
+  mode **Full**; Flexible causes a redirect loop with Pages.
+- `www` still points at Google Sites (`ghs.googlehosted.com`) until Shivam
+  migrates it.
+
 ## Known issues
 
 - `public/doppler.jpg` is an unreferenced leftover from the fork.
