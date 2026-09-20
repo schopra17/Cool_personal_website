@@ -51,7 +51,7 @@ export default function Hero() {
                     </span>
                   </h1>
 
-                  <p className="hero-tagline">Building hardware that senses, moves, and holds up for the people who depend on it.</p>
+                  <p className="hero-tagline">From robots in sand to sensors on skin, building hardware that works where people live.</p>
                 </div>
 
                 {personalInfo.photo && (
