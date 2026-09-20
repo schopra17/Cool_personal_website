@@ -13,8 +13,9 @@ interface Props {
 }
 
 /* One rotator serving both the hero side column and the About section. Pauses
-   on hover and focus, honours prefers-reduced-motion, and lets the dots drive
-   it manually. */
+   on hover and focus, honours prefers-reduced-motion, and can be driven by
+   hand: click the picture itself to go to the next one, or jump with the dots.
+   The picture is a real button, so Enter and Space work too. */
 export default function PhotoSlideshow({ slides, title, placeholders = false, intervalMs = 3200 }: Props) {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -30,6 +31,8 @@ export default function PhotoSlideshow({ slides, title, placeholders = false, in
 
   if (shown.length === 0) return null;
   const active = shown[Math.min(index, shown.length - 1)];
+  const many = shown.length > 1;
+  const next = () => setIndex(i => (i + 1) % shown.length);
 
   return (
     <div
@@ -50,7 +53,16 @@ export default function PhotoSlideshow({ slides, title, placeholders = false, in
       </div>
 
       <div className="win-body" style={{ padding: 0 }}>
-        <div className="hero-slideshow">
+        <div
+          className={`hero-slideshow ${many ? 'hero-slideshow-clickable' : ''}`}
+          onClick={many ? next : undefined}
+          onKeyDown={many ? e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); next(); }
+          } : undefined}
+          role={many ? 'button' : undefined}
+          tabIndex={many ? 0 : undefined}
+          aria-label={many ? 'Show the next photo' : undefined}
+        >
           {shown.map((s, i) => (
             <div key={i} className="hero-slide" style={{ opacity: i === index ? 1 : 0 }} aria-hidden={i !== index}>
               {s.src ? (

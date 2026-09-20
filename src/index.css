@@ -1495,3 +1495,30 @@ section[id] { scroll-margin-top: 5rem; }
 .post-figure video { width: 100%; height: auto; display: block; }
 video.post-cover { width: 100%; height: auto; display: block; }
 .blog-card-cover video { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* The picture itself advances the rotator, so say so on hover. */
+.hero-slideshow-clickable { cursor: pointer; }
+.hero-slideshow-clickable::after {
+  content: 'Next →';
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  z-index: 2;
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(24,25,45,0.8);
+  color: #fff;
+  padding: 0.15rem 0.45rem;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.18s ease;
+  pointer-events: none;
+}
+.hero-slideshow-clickable:hover::after,
+.hero-slideshow-clickable:focus-visible::after { opacity: 1; }
+.hero-slideshow-clickable:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .hero-slideshow-clickable::after { transition: none; }
+}

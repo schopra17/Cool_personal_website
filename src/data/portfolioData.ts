@@ -4,7 +4,7 @@ import { folderPhotos } from '../lib/photos';
 export const personalInfo = {
   name: "Shivam Chopra",
   title: "Senior Medical Device Engineer | Robotics PhD",
-  tagline: "Mechanical engineer and technical lead specializing in system-level mechanical architecture and electromechanical integration for wearable and robotic systems.",
+  tagline: "Building hardware that senses, moves, and holds up for the people who depend on it.",
   photo: "/shivam.jpg",
   photo2: "",
   email: "shivamchopraphd@gmail.com",
