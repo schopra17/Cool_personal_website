@@ -246,6 +246,12 @@ Nothing built is committed: the Action runs typecheck + build and publishes
 - `www` is a CNAME to `schopra17.github.io` (DNS only); GitHub redirects it to
   the apex. Google Sites no longer serves the domain. Keep the
   `google-site-verification` TXT record: it is only for Search Console.
+- **Do not toggle the custom domain repeatedly.** Let's Encrypt allows only 5
+  certificates per week for the same exact set of names. Several toggles on
+  2026-09-16 appear to have hit that limit: the request covering
+  `shivamchopra.net` + `www.shivamchopra.net` has been stuck in state `new`
+  ever since. The window should clear around 2026-09-23, after which GitHub
+  should issue it without help. Wait rather than toggling again.
 - If a certificate never issues, removing and re-adding the custom domain via
   `gh api -X PUT repos/schopra17/Cool_personal_website/pages -f cname=...`
   restarts the request. **Do not** temporarily set `www` as the primary
